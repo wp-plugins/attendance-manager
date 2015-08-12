@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Attendance Manager
-Plugin URI: http://sukimalab.com/attendance-manager/
+Plugin URI: http://attmgr.com
 Description: Each user can edit their attendance schedule by themselves. 管理者のほか、ユーザー自身も編集可能な出勤管理プラグイン。
 Author: tnomi
 Ahthor Name: SUKIMALAB

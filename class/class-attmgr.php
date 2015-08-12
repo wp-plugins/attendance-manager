@@ -7,7 +7,7 @@ class ATTMGR {
 	// Settings
 	const TABLEPREFIX             = 'attmgr_';
 	const TEXTDOMAIN              = 'attendance-manager';
-	const URL                     = 'http://sukimalab.com/attendance-manager/';
+	const URL                     = 'http://attmgr.com/';
 	const PLUGIN_ID               = 'attmgr';
 	const PLUGIN_FILE             = 'attendance-manager.php';
 	const PLUGIN_VERSION          = '0.2.0';
