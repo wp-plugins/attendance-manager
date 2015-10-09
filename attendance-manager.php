@@ -8,7 +8,7 @@ Ahthor Name: SUKIMALAB
 Author URI: http://sukimalab.com
 Text Domain: attendance-manager
 Domain Path: /languages/
-Version: 0.2.0
+Version: 0.4.2
 */
 
 	require_once dirname(__FILE__).'/class/class-attmgr.php';

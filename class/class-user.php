@@ -45,6 +45,7 @@ class ATTMGR_User {
 		add_filter( ATTMGR::PLUGIN_ID.'_get_user_data', array( 'ATTMGR_User', 'get_user_data' ), 10, 2 );
 		add_filter( ATTMGR::PLUGIN_ID.'_is_usertype_admin', array( 'ATTMGR_User', 'is_admin_filter' ), 10, 2 );
 		add_filter( ATTMGR::PLUGIN_ID.'_is_usertype_staff', array( 'ATTMGR_User', 'is_staff_filter' ), 10, 2 );
+		add_filter( ATTMGR::PLUGIN_ID.'_can_edit_admin_scheduler', array( 'ATTMGR_User', 'can_edit_admin_scheduler_filter' ), 10, 2 );
 	}
 
 	/**
@@ -56,6 +57,8 @@ class ATTMGR_User {
 		add_action( 'edit_user_profile', array( 'ATTMGR_User', 'extra_fields' ) );
 		add_action( 'user_register', array( 'ATTMGR_User', 'save_extra_fields' ) );
 		add_action( 'edit_user_profile_update', array( 'ATTMGR_User', 'save_extra_fields' ) );
+
+		add_filter( ATTMGR::PLUGIN_ID.'_extra_profile', array( 'ATTMGR_User', 'extra_profile' ), 10, 2 );
 
 		add_action( 'publish_post', array( 'ATTMGR_User', 'save_staff_url' ) );
 		add_action( 'publish_page', array( 'ATTMGR_User', 'save_staff_url' ) );
@@ -114,7 +117,7 @@ class ATTMGR_User {
 	}
 
 	/** 
-	 *	User work today inspection
+	 *	User who works today
 	 */
 	public function is_work( $date ) {
 		global $wpdb;
@@ -129,6 +132,38 @@ class ATTMGR_User {
 					."AND `endtime` IS NOT NULL ";
 			$ret = $wpdb->get_row( $wpdb->prepare( $query, array( $this->data['ID'], $date ) ), ARRAY_A );
 			return $ret;
+		}
+		return false;
+	}
+
+	/** 
+	 *	User working from yesterday
+	 */
+	public function is_work_from_yesterday( $date ) {
+		global $attmgr, $wpdb;
+
+		if ( $this->is_staff() ) {
+			$prefix = $wpdb->prefix.ATTMGR::TABLEPREFIX;
+			$table = $prefix.'schedule';
+
+			$now = current_time('timestamp');
+			$now_time = date( 'H:i', $now );
+			$today = date( 'Y-m-d', $now );
+			// e.g. 19:00 ~ 04:00
+			if ( $date == $today && $attmgr->option['general']['starttime'] > $attmgr->option['general']['endtime'] ) {
+				// e.g. now 02:15 (end 04:00) 
+				if ( $now_time < $attmgr->option['general']['endtime'] ) {
+					$date = date( 'Y-m-d', $now - ( 60 * 60 * 24 ) );
+					$query = "SELECT * FROM $table "
+							."WHERE `staff_id`=%d "
+							."AND `date`=%s "
+							."AND `starttime` IS NOT NULL "
+							."AND `endtime` IS NOT NULL "
+							."AND `endtime` >= '".ATTMGR_Form::time_calc( $now_time, 60 * 24 )."' ";
+					$ret = $wpdb->get_row( $wpdb->prepare( $query, array( $this->data['ID'], $date ) ), ARRAY_A );
+					return $ret;
+				}
+			}
 		}
 		return false;
 	}
@@ -165,8 +200,23 @@ class ATTMGR_User {
 		}
 	}
 
+	/** 
+	 *	Can edit admin scheduler
+	 */
+	public function can_edit_admin_scheduler() {
+		$result = false;
+		$result = apply_filters( ATTMGR::PLUGIN_ID.'_can_edit_admin_scheduler', $result, $this );
+		return $result;
+	}
+	public function can_edit_admin_scheduler_filter( $result, $user ) {
+		if ( $user->is_admin() ) {
+			$result = true;
+		}
+		return $result;
+	}
+
 	/**  
-	 *	特定ユーザーの情報を取得: Get user info
+	 *	Get user info
 	 */
 	public function get_user( $user_id ) {
 		$args = array(
@@ -294,12 +344,7 @@ class ATTMGR_User {
 	/**  
 	 *	Get working staff
 	 */
-	public function get_working_staff( $date ) {
-		/*
-		$args = array(
-			'date' => '2015-07-25',
-		);
-		*/
+	public function get_working_staff( $date, $yesterday = false ) {
 		$meta = array(
 		    'meta_query' => array(
 		        array(
@@ -312,30 +357,54 @@ class ATTMGR_User {
 		$user_query = new WP_User_Query( $meta );
 		$users = $user_query->results;
 		$staff = array();
+		$attendance = array();
 		if ( ! empty( $users ) ) {
 			foreach ( $users as $u ) {
 				if ( ! empty( $u->ID ) ) {
 					$user = new ATTMGR_User( $u->ID );
-					if ( $user->is_work( $date ) ) {
-						$staff[] = $user;
+					if ( $yesterday == false ) {
+						if ( $ret = $user->is_work( $date ) ) {
+							$staff[] = $user;
+							$attendance[$u->ID] = $ret;
+						}
+					} else {
+						if ( $ret = $user->is_work_from_yesterday( $date ) ) {
+							$staff[] = $user;
+							$attendance[$u->ID] = $ret;
+						}
 					}
 				}
 			}
 		}
-		return $staff;
+		$result = array(
+			'staff' => $staff,
+			'attendance' => $attendance
+		);
+		return $result;
 	}
 
- 	/**
+	/**
 	 *	User extra fields
 	 */
 	public function extra_fields( $user ) {
+		$html = '';
+		$html = apply_filters( ATTMGR::PLUGIN_ID.'_extra_profile', $html, $user );
+		echo $html;
+	}
+
+	/**
+	 *	User extra profile
+	 */
+	public function extra_profile( $html, $user ) {
+		global $pagenow;
+
 		$staff_attr = ATTMGR::PLUGIN_ID.'_ex_attr_staff';
 		$checked = $readonly = '';
-		if ( in_array( current_filter(), array( 'show_user_profile', 'edit_user_profile' ) )
+		if ( in_array( $pagenow, array( 'profile.php', 'user-edit.php' ) )
 			&& get_user_meta( $user->ID, $staff_attr, true ) ) {
 			$checked = 'checked';
 		}
-		if ( in_array( current_filter(), array( 'show_user_profile' ) ) ) {
+		if ( in_array( $pagenow, array( 'profile.php' ) ) ) {
 			$readonly = 'readonly onclick="return false;"';
 		}
 
@@ -369,7 +438,7 @@ EOD;
 			$readonly
 		);
 		$extra_fields = str_replace( $search, $replace, $extra_fields );
-		echo $extra_fields;
+		return $html . $extra_fields;
 	}
 
 	/**

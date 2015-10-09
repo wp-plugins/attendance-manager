@@ -9,6 +9,7 @@ class ATTMGR_Info {
 	 */
 	public function init() {
 		add_action( ATTMGR::PLUGIN_ID.'_plugin_info', array( 'ATTMGR_Info', 'plugin_info') );
+		add_action( ATTMGR::PLUGIN_ID.'_latest_info', array( 'ATTMGR_Info', 'latest_info') );
 	}
 
 	/** 
@@ -50,6 +51,29 @@ class ATTMGR_Info {
 			</p>
 			<p><i>
 			</i></p>
+		</div>
+	</div>
+	<?php
+	}
+
+	/** 
+	 *	LATEST INFO (in PLUGIN OPTION PAGE)
+	 */
+	public static function latest_info() {
+	?>
+	<div class="postbox">
+		<h3><span><?php _e( 'Latest from Plugin', ATTMGR::TEXTDOMAIN ); ?></span></h3>
+		<div class="inside">
+		<?php
+		$url = ATTMGR::URL;
+		$feed = fetch_feed( $url );
+		if ( !empty( $feed->data ) ) {
+			$feed->set_cache_duration( 60*60 );
+			$feed->init();
+			$param = sprintf( 'title=%s&items=5&show_summary=0&show_author=0&show_date=0', __( 'Latest from Plugin', ATTMGR::TEXTDOMAIN ) );
+			@wp_widget_rss_output( $feed, $param );
+		}
+		?>
 		</div>
 	</div>
 	<?php

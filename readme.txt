@@ -3,8 +3,8 @@ Contributors: tnomi
 Donate link: 
 Tags: schedule, attendance, work, employee, online scheduling
 Requires at least: 4.1
-Tested up to: 4.2.3
-Stable tag: 0.2.0
+Tested up to: 4.3.1
+Stable tag: 0.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,6 +12,8 @@ Each user can do attendance management by themselves.
 管理者のほか、ユーザー自身も編集可能な出勤管理プラグイン。
 
 == Description ==
+
+Visit [The User's Guide (ja)](http://attmgr.com)/[(en)](http://attmgr.com/en/) for more info.
 
 An administrator can do all users’ attendance management.<br>
 And each user can do attendance management by themselves.
@@ -62,6 +64,9 @@ This plug-in makes several pages and data base tables automatically.<br>
 2. When registering user, check "This user is a staff".<br>
 登録の際、「このユーザーはスタッフです」をチェックします。
 
+3. In case of the registered user, check "This user is a staff" in  a profile edit page of that user.<br>
+登録済みのユーザーの場合は、そのユーザーのプロフィール編集ページで「このユーザーはスタッフです」をチェックします。
+
 = Post each staff’s introduction article =
 
 Post each staff's introduction article. (For example into a "staff" category etc.)<br>
@@ -110,12 +115,38 @@ If you encounter some problems, please ask me.
 
 == Changelog ==
 
+= 0.4.2 =
+
+* Some filters were added.
+
+= 0.4.1 =
+
+* Bug fix in "Monthly schedule".
+
+= 0.4.0 =
+
+* When time table is up to the next day like "23:00~08:00", the schedule which continues from the previous day is displayed in "Today's staff" until end time. (In this case, It is until 8:00.)
+
+* Time selection of a scheduler is helped.<br>
+When the start time was chosen, standard end time is chosen automatically.<br>
+And, the choices of end time are limited to time which is later from the start time.<br>
+If start time which is later from the end time is chosen, end time would be reset.
+
+= 0.3.1 =
+
+* Bug fix.
+
+= 0.3.0 =
+
+* Some style classes were added.
+* Bug fix.
+
 = 0.2.0 =
 
 * first release.
 
 == Upgrade Notice ==
 
-= 0.2.0 =
+= 0.4.2 =
 
-first release.
+Some filters were added.

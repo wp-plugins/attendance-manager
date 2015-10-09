@@ -8,6 +8,15 @@
 ul.staff_block {
 	margin: 0;
 	padding: 0;
+	*zoom: 1;
+}
+ul.staff_block:before,
+ul.staff_block:after {
+	content: " ";
+	display: table;
+}
+ul.staff_block:after {
+	clear: both;
 }
 ul.staff_block li {
 	float: left;
@@ -53,6 +62,12 @@ table.attmgr_weekly_all .dow {
 	margin-left: 5px;
 	font-size: 0.9em;
 }
+table.attmgr_weekly_all td.working {
+
+}
+table.attmgr_weekly_all td.not_working {
+	background-color: #f6f6f6;
+}
 
 /**
  *	Weekly personal schedule
@@ -76,6 +91,12 @@ table.attmgr_weekly .date {
 table.attmgr_weekly .dow {
 	margin-left: 5px;
 	font-size: 0.9em;
+}
+table.attmgr_weekly td.working {
+
+}
+table.attmgr_weekly td.not_working {
+	background-color: #f6f6f6;
 }
 
 /**
@@ -252,11 +273,11 @@ table.attmgr_guide_weekly .dow {
 	height: 1em;
 }
 .list_pagenavi:after {
-    content: "";
-    clear: both;
-    height: 0;
-    display: block;
-    visibility: hidden;
+	content: "";
+	clear: both;
+	height: 0;
+	display: block;
+	visibility: hidden;
 }
 .list_pagenavi .prev_page {
 	float: left;
@@ -288,16 +309,11 @@ table.attmgr_guide_weekly .dow {
 	margin-top: 10px;
 	margin-bottom: 20px;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-	background-color: #fcf8e3;
-	border: 1px solid #fbeed5;
+	background-color: transparent;
+	border: 1px solid #ddd;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-}
-
-.alert,
-.alert h4 {
-	color: #c09853;
 }
 
 .alert h4 {
@@ -309,6 +325,15 @@ table.attmgr_guide_weekly .dow {
 	top: -2px;
 	right: -21px;
 	line-height: 20px;
+}
+
+.alert-caution {
+	color: #c09853;
+	background-color: #fcf8e3;
+	border: 1px solid #fbeed5;
+}
+.alert-caution h4 {
+	color: #c09853;
 }
 
 .alert-success {

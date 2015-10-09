@@ -8,6 +8,7 @@ class ATTMGR_Function {
 	 *	Load 
 	 */
 	public function load() {
+		add_action( 'init', array( 'ATTMGR_Updation', 'plugin_update') );
 		add_action( 'init', array( 'ATTMGR_Function', 'init' ) );
 		add_action( 'init', array( 'ATTMGR_Shortcode', 'init' ) );
 		add_action( 'init', array( 'ATTMGR_User', 'init' ) );
@@ -60,14 +61,14 @@ class ATTMGR_Function {
 	/**
 	 *	Get user portrait
 	 */
-	public static function get_portrait( $portrait, $staff ) {
+	public function get_portrait( $portrait, $staff ) {
 		global $attmgr;
 
 		$p = get_the_post_thumbnail( $staff->data[ATTMGR::PLUGIN_ID.'_mypage_id'], 'thumbnail' );
 		if ( !empty( $p ) ) {
 			$portrait = $p;
 		} else {
-			$portrait = sprintf( '<img src="%s/img/nopoatrait.png" />', $attmgr->mypluginurl );
+			$portrait = sprintf( '<img src="%simg/nopoatrait.png" />', $attmgr->mypluginurl );
 		}
 		if ( ! empty( $staff->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ) ) {
 			$portrait = sprintf( '<a href="%s">%s</a>', get_permalink( $staff->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ), $portrait );
