@@ -13,12 +13,17 @@ class ATTMGR_Shortcode {
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_daily', array( 'ATTMGR_Shortcode', 'daily' ) );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily', array( 'ATTMGR_Shortcode', 'daily_schedule' ), 99 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily_format', array( 'ATTMGR_Shortcode', 'daily_format' ), 99 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily_values', array( 'ATTMGR_Shortcode', 'daily_values' ), 99, 2 );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_weekly', array( 'ATTMGR_Shortcode', 'weekly' ) );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly', array( 'ATTMGR_Shortcode', 'weekly_schedule' ), 99 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_attendance', array( 'ATTMGR_Shortcode', 'weekly_attendance' ), 99, 2 );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_weekly_all', array( 'ATTMGR_Shortcode', 'weekly_all' ) );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all', array( 'ATTMGR_Shortcode', 'weekly_all_schedule' ), 99 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all_info', array( 'ATTMGR_Shortcode', 'weekly_all_info' ), 99, 2 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all_attendance', array( 'ATTMGR_Shortcode', 'weekly_all_attendance' ), 99, 2 );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_monthly_all', array( 'ATTMGR_Shortcode', 'monthly_all' ) );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_monthly_all', array( 'ATTMGR_Shortcode', 'monthly_all_schedule' ), 99 );
@@ -140,7 +145,7 @@ class ATTMGR_Shortcode {
 		ob_start();
 		$staff = ATTMGR_User::get_all_staff();
 		if ( empty( $staff ) ) {
-			printf( '<div class="alert">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
+			printf( '<div class="alert alert-caution">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
 		} else {
 			$staff_ids = array();
 			foreach ( $staff as $s ) {
@@ -214,10 +219,10 @@ class ATTMGR_Shortcode {
 			sort( $staff );
 			foreach ( $staff as $staff_id ) {
 				$s = new ATTMGR_User( $staff_id );
+				$name = $s->data[ $name_key ];
 				if ( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ) {
 					$url = get_permalink( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] );
-					$name = $s->data[ $name_key ];
-					$list[] = sprintf( '<div class="staff"><a href="%s">%s</a><div>', $url, $name );
+					$list[] = sprintf( '<div class="staff"><a href="%s">%s</a></div>', $url, $name );
 				} else {
 					$list[] = sprintf( '<div class="staff">%s</div>', $name );
 				}
@@ -256,7 +261,7 @@ EOD;
 		);
 		$staff = ATTMGR_User::get_all_staff();
 		if ( empty( $staff ) ) {
-			printf( '<div class="alert">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
+			printf( '<div class="alert alert-caution">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
 		} else {
 			$startdate = $attmgr->page['startdate'];
 			list( $y, $m, $d ) = explode( '-', $startdate );
@@ -292,9 +297,11 @@ EOD;
 				$schedule = array();
 				if ( !empty( $records ) ) {
 					foreach ( $records as $r ) {
-						$schedule[ $r['date'] ] = $r;
-						$schedule[ $r['date'] ]['starttime'] = substr( $schedule[ $r['date'] ]['starttime'], 0, 5 );
-						$schedule[ $r['date'] ]['endtime'] = substr( $schedule[ $r['date'] ]['endtime'], 0, 5 );
+						if ( ! empty( $r['starttime'] ) || ! empty( $r['endtime'] ) ) {
+							$schedule[ $r['date'] ] = $r;
+							$schedule[ $r['date'] ]['starttime'] = ATTMGR_Form::time_form( substr( $r['starttime'], 0, 5 ) );
+							$schedule[ $r['date'] ]['endtime'] = ATTMGR_Form::time_form( substr( $r['endtime'], 0, 5 ) );
+						}
 					}
 				}
 				$line = '';
@@ -302,13 +309,23 @@ EOD;
 					$d = date( 'Y-m-d', $starttime + 60*60*24*$i );
 					$w = date( 'w', $starttime + 60*60*24*$i );
 					$dow = ATTMGR_Calendar::dow( $w );
+					$class = array( ATTMGR_Calendar::dow_lower( $w ) );
 					if ( isset( $schedule[ $d ] ) ) {
+						$class[] = 'working';
 						$time = sprintf( '%s ~ %s', $schedule[ $d ]['starttime'], $schedule[ $d ]['endtime'] );
 					}
 					else {
+						$class[] = 'not_working';
 						$time = '-';
 					}
-					$line .= sprintf( '<td>%s</td>'."\n", $time );
+					$attendance = $time;
+					$args = array(
+						'date' => $d,
+						'schedule' => $schedule[ $d ],
+						'current_staff' => $s
+					);
+					$attendance = apply_filters( 'attmgr_shortcode_weekly_all_attendance', $attendance, $args );
+					$line .= sprintf( '<td class="%s">%s</td>'."\n", implode( ' ', $class ), $attendance );
 				}
 				$portrait = null;
 				$portrait = ATTMGR_Function::get_portrait( $portrait, $s );
@@ -316,8 +333,14 @@ EOD;
 				if ( ! empty( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ) ) {
 					$name = sprintf( '<a href="%s">%s</a>', get_permalink( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ), $name );
 				}
-
-				$body .= sprintf( '<tr><td class="portrait">%s%s</td>%s</tr>'."\n", $portrait, $name, $line );
+				$info = sprintf( '%s%s', $portrait, $name );
+				$args = array(
+					'name' => $name,
+					'portrait' => $portrait,
+					'current_staff' => $s
+				);
+				$info = apply_filters( 'attmgr_shortcode_weekly_all_info', $info, $args );
+				$body .= sprintf( '<tr><td class="portrait">%s</td>%s</tr>'."\n", $info, $line );
 			}
 
 			ob_start();
@@ -349,6 +372,22 @@ EOD;
 	}
 
 	/**
+	 *	'attmgr_shortcode_weekly_all_info'
+	 */
+	public function weekly_all_info( $info, $args ) {
+		extract( $args );	// $portrait, $current_staff
+		return $info;
+	}
+
+	/**
+	 *	'attmgr_shortcode_weekly_all_attendance'
+	 */
+	public function weekly_all_attendance( $attendance, $args ) {
+		extract( $args );	// $date, $schedule, $current_staff
+		return $attendance;
+	}
+
+	/**
 	 *	Weekly personal schedule
 	 */
 	public function weekly_schedule( $atts, $content = null ) {
@@ -364,7 +403,7 @@ EOD;
 		$staff_id = $id;
 		$staff = new ATTMGR_User( $staff_id );
 		if ( empty( $staff ) ) {
-			printf( '<div class="alert">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
+			printf( '<div class="alert alert-caution">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
 		} else {
 			$startdate = $attmgr->page['startdate'];
 			list( $y, $m, $d ) = explode( '-', $startdate );
@@ -398,9 +437,11 @@ EOD;
 			$schedule = array();
 			if ( !empty( $records ) ) {
 				foreach ( $records as $r ) {
-					$schedule[ $r['date'] ] = $r;
-					$schedule[ $r['date'] ]['starttime'] = substr( $schedule[ $r['date'] ]['starttime'], 0, 5 );
-					$schedule[ $r['date'] ]['endtime'] = substr( $schedule[ $r['date'] ]['endtime'], 0, 5 );
+					if ( ! empty( $r['starttime'] ) || ! empty( $r['endtime'] ) ) {
+						$schedule[ $r['date'] ] = $r;
+						$schedule[ $r['date'] ]['starttime'] = ATTMGR_Form::time_form( substr( $r['starttime'], 0, 5 ) );
+						$schedule[ $r['date'] ]['endtime'] = ATTMGR_Form::time_form( substr( $r['endtime'], 0, 5 ) );
+					}
 				}
 			}
 			$line = '';
@@ -408,13 +449,23 @@ EOD;
 				$d = date( 'Y-m-d', $starttime + 60*60*24*$i );
 				$w = date( 'w', $starttime + 60*60*24*$i );
 				$dow = ATTMGR_Calendar::dow( $w );
+				$class = array( ATTMGR_Calendar::dow_lower( $w ) );
 				if ( isset( $schedule[ $d ] ) ) {
+					$class[] = 'working';
 					$time = sprintf( '%s ~ %s', $schedule[ $d ]['starttime'], $schedule[ $d ]['endtime'] );
 				}
 				else {
+					$class[] = 'not_working';
 					$time = '-';
 				}
-				$line .= sprintf( '<td>%s</td>'."\n", $time );
+				$attendance = $time;
+				$args = array(
+					'date' => $d,
+					'schedule' => $schedule[ $d ],
+					'current_staff' => $staff
+				);
+				$attendance = apply_filters( 'attmgr_shortcode_weekly_attendance', $attendance, $args );
+				$line .= sprintf( '<td class="%s">%s</td>'."\n", implode( ' ', $class ), $attendance );
 			}
 			$body .= sprintf( '<tr>%s</tr>'."\n", $line );
 
@@ -444,6 +495,14 @@ EOD;
 	}
 
 	/**
+	 *	'attmgr_shortcode_weekly_attendance'
+	 */
+	public function weekly_attendance( $attendance, $args ) {
+		extract( $args );	// $date, $schedule, $current_staff
+		return $attendance;
+	}
+
+	/**
 	 *	Daily schedule
 	 */
 	public function daily_schedule( $atts, $content = null ) {
@@ -458,61 +517,109 @@ EOD;
 		);
 		$staff = ATTMGR_User::get_all_staff();
 		if ( empty( $staff ) ) {
-			printf( '<div class="alert">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
+			printf( '<div class="alert alert-caution">%s</div>', __( 'No staff are registered yet.', ATTMGR::TEXTDOMAIN ) );
 		} else {
+			ob_start();
 			if ( isset( $attmgr->page['qs']['date'] ) ) {
 				$date = $attmgr->page['qs']['date'];
 			} else {
 				$date = date( 'Y-m-d', current_time( 'timestamp' ) );
 			}
-			$calendar = ATTMGR_Calendar::set_weekly( $date );
-			$staff = ATTMGR_User::get_working_staff( $date );
-			ob_start();
-			echo '<ul class="staff_block">'."\n";
-			foreach ( $staff as $s ) {
-				$p = null;
-				if ( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ) {
-					$p = get_post( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] );
-				}
-				$format = <<<EOD
+			$starttime = $attmgr->option['general']['starttime'];
+			$endtime = $attmgr->option['general']['endtime'];
+
+//			$calendar = ATTMGR_Calendar::set_weekly( $date );
+			$now = current_time('timestamp');
+			$now_time = date( 'H:i', $now );
+
+			// e.g. 19:00 ~ 04:00
+			$result = ATTMGR_User::get_working_staff( $date, 'yesterday' );
+			if ( ! empty( $result['staff'] ) ) {
+				$from_yesterday = true;
+				printf( '<div class="alert alert-normal">%s</div>', sprintf( __( '[Open %s~%s] Now %s ', ATTMGR::TEXTDOMAIN ), $starttime, $endtime, $now_time ) );
+			} else {
+				$from_yesterday = false;
+				$result = ATTMGR_User::get_working_staff( $date );
+			}
+
+			extract( $result );		// $staff, $attendance
+			if ( empty( $staff ) ) {
+				printf( '<div class="alert">%s</div>', __( 'There are no staff today.', ATTMGR::TEXTDOMAIN ) );
+			} else {
+				echo '<ul class="staff_block">'."\n";
+				foreach ( $staff as $s ) {
+					$p = null;
+					if ( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ) {
+						$p = get_post( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] );
+					}
+					// Format
+					$format = <<<EOD
 <li>
 	<div class="thumb">
 		%PORTRAIT%
 	</div>
 	<div class="post-info">
 		<div class="name">%NAME%</div>
-		<div class="attendance">%ATTENDANCE%<div>
+		<div class="attendance">%ATTENDANCE%</div>
 	</div>
 	<div class="clear">&nbsp;</div>
 </li>
 EOD;
-				$portrait = null;
-				$portrait = ATTMGR_Function::get_portrait( $portrait, $s );
-				$name = $s->data[ $name_key ];
-				if ( !empty( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ) ) {
-					$name = sprintf( '<a href="%s">%s</a>', get_permalink( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ), $name );
-				}
-				$attendance = $s->is_work( $date );
-				$starttime = ATTMGR_Form::time_form( $attendance['starttime'], '%d:%02d' );
-				$endtime   = ATTMGR_Form::time_form( $attendance['endtime'], '%d:%02d' );
+					$format = apply_filters( 'attmgr_shortcode_daily_format', $format );
 
-				$search = array(
-					'%PORTRAIT%',
-					'%NAME%',
-					'%ATTENDANCE%',
-				);
-				$replace = array(
-					$portrait,
-					$name,
-					sprintf( '%s ~ %s', $starttime, $endtime ),
-				);
-				$line = str_replace( $search, $replace, $format );
-				echo $line;
+					// Search: Key
+					$search = array(
+						'%PORTRAIT%',
+						'%NAME%',
+						'%ATTENDANCE%',
+					);
+
+					// Repelace: Value
+					$portrait = null;
+					$portrait = ATTMGR_Function::get_portrait( $portrait, $s );
+					$name = $s->data[ $name_key ];
+					if ( !empty( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ) ) {
+						$name = sprintf( '<a href="%s">%s</a>', get_permalink( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ), $name );
+					}
+					$starttime = ATTMGR_Form::time_form( $attendance[$s->data['ID']]['starttime'], '%d:%02d' );
+					$endtime   = ATTMGR_Form::time_form( $attendance[$s->data['ID']]['endtime'], '%d:%02d' );
+
+					$replace = array(
+						$portrait,
+						$name,
+						sprintf( '%s ~ %s', $starttime, $endtime ),
+					);
+					$args = array(
+						'result' => $result,
+						'current_staff' => $s
+					);
+
+					list( $search, $replace ) = apply_filters( 'attmgr_shortcode_daily_values', array( $search, $replace ), $args );
+					$line = str_replace( $search, $replace, $format );
+					echo $line;
+				}
+				echo "</ul>\n";
 			}
 		}
 		$html = ob_get_contents();
 		ob_end_clean();
 		return $html;
 	}
+
+	/**
+	 *	'attmgr_shortcode_daily_format'
+	 */
+	public function daily_format( $format ) {
+		return $format;
+	}
+
+	/**
+	 *	'attmgr_shortcode_daily_values'
+	 */
+	public function daily_values( $array, $args ) {
+		list( $search, $replace ) = $array;
+		return array( $search, $replace );
+	}
+
 }
 ?>

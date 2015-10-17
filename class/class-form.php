@@ -47,8 +47,12 @@ class ATTMGR_Form {
 			foreach ( $_POST[ATTMGR::PLUGIN_ID.'_post'] as $date => $value ) {
 				$starttime = $value['starttime'];
 				$endtime = $value['endtime'];
-				if ( empty( $value['starttime'] ) && empty( $value['endtime'] ) ) {
+				if ( empty( $starttime ) && empty( $endtime ) ) {
 					$values[] = $wpdb->prepare( "( %d, %s, NULL, NULL )", array( $staff_id, $date ) );
+				} elseif ( empty( $starttime ) ) {
+					$values[] = $wpdb->prepare( "( %d, %s, NULL, %s )", array( $staff_id, $date, $endtime ) );
+				} elseif ( empty( $endtime ) ) {
+					$values[] = $wpdb->prepare( "( %d, %s, %s, NULL )", array( $staff_id, $date, $starttime ) );
 				} else {
 					$values[] = $wpdb->prepare( "( %d, %s, %s, %s )", array( $staff_id, $date, $starttime, $endtime ) );
 				}
@@ -68,6 +72,7 @@ class ATTMGR_Form {
 					."ON DUPLICATE KEY UPDATE "
 					."starttime = VALUES( starttime ), endtime = VALUES( endtime ) ";
 			$ret = $wpdb->query( $query );
+			$ret = $wpdb->query( "DELETE FROM $table WHERE starttime IS NULL AND endtime IS NULL " );
 		}
 		$url = get_permalink( get_page_by_path( $attmgr->option['specialpages']['staff_scheduler'] )->ID );
 		// エラーあり
@@ -112,8 +117,12 @@ class ATTMGR_Form {
 				foreach ( $data as $date => $value ) {
 					$starttime = $value['starttime'];
 					$endtime = $value['endtime'];
-					if ( empty( $value['starttime'] ) && empty( $value['endtime'] ) ) {
+					if ( empty( $starttime ) && empty( $endtime ) ) {
 						$values[] = $wpdb->prepare( "( %d, %s, NULL, NULL )", array( $staff_id, $date ) );
+					} elseif ( empty( $starttime ) ) {
+						$values[] = $wpdb->prepare( "( %d, %s, NULL, %s )", array( $staff_id, $date, $endtime ) );
+					} elseif ( empty( $endtime ) ) {
+						$values[] = $wpdb->prepare( "( %d, %s, %s, NULL )", array( $staff_id, $date, $starttime ) );
 					} else {
 						$values[] = $wpdb->prepare( "( %d, %s, %s, %s )", array( $staff_id, $date, $starttime, $endtime ) );
 					}
@@ -126,6 +135,7 @@ class ATTMGR_Form {
 				}
 				$sql = str_replace( '%VALUES%', implode( ',', $values ), $query ); 
 				$ret = $wpdb->query( $sql );
+				$ret = $wpdb->query( "DELETE FROM $table WHERE starttime IS NULL AND endtime IS NULL " );
 			}
 		}
 
@@ -174,12 +184,6 @@ class ATTMGR_Form {
 				header( 'Location: '.$url );
 				exit;
 			}
-			// admin
-			if ( $attmgr->user['operator']->is_admin() ) {
-				$url = get_permalink( get_page_by_path( $attmgr->option['specialpages']['admin_scheduler'] )->ID );
-				header( 'Location: '.$url );
-				exit;
-			}
 		}
 
 		// Scheduler for admin
@@ -196,11 +200,6 @@ class ATTMGR_Form {
 					$url .= ( strstr( $url, '?' ) ) ? '&' : '?';
 					$url = $url.implode( '&', $attmgr->page['redirect_to'] );
 				}
-				header( 'Location: '.$url );
-				exit;
-			}
-			if ( $attmgr->user['operator']->is_staff() ) {
-				$url = get_permalink( get_page_by_path( $attmgr->option['specialpages']['staff_scheduler'] )->ID );
 				header( 'Location: '.$url );
 				exit;
 			}
@@ -222,7 +221,7 @@ class ATTMGR_Form {
 		);
 		$staff = ATTMGR_User::get_all_staff();
 		if ( empty( $staff ) ) {
-			printf( '<div class="alert">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
+			printf( '<div class="alert alert-caution">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
 		} else {
 			if ( $attmgr->user['operator']->is_staff() ) {
 				$staff_id = $attmgr->user['operator']->data['ID'];
@@ -259,9 +258,9 @@ class ATTMGR_Form {
 				$profile = sprintf( '<h3 class="name">%s</h3>', $name );
 
 				// Return url
-				$url = get_permalink( get_page_by_path( $attmgr->option['specialpages']['admin_scheduler'] )->ID );
-				$url .= ( strstr( $url, '?' ) ) ? '&' : '?';
-				$url .= ( empty( $attmgr->page['qs']['week'] ) ) ? '' : 'week='.$startdate;
+				$url = get_permalink( get_page_by_path( $attmgr->option['specialpages']['staff_scheduler'] )->ID );
+				$query_string = ( strstr( $url, '?' ) ) ? '&' : '?';
+				$url .= ( empty( $attmgr->page['qs']['week'] ) ) ? '' : $query_string.'week='.$startdate;
 
 				ob_start();
 				$format = <<<EOD
@@ -302,7 +301,7 @@ EOD;
 					$param['name'] = ATTMGR::PLUGIN_ID.'_post['.$d.'][endtime]';
 					$et = ATTMGR_Form::select_time( $param );
 
-					$off = sprintf( '<label><input type="checkbox" name="%s_off[%s]" value="1" />%s</label>', ATTMGR::PLUGIN_ID, $d, __( '&times;', ATTMGR::TEXTDOMAIN ) );
+					$off = sprintf( '<label><input type="checkbox" name="%s_off[%s]" value="1" />%s</label>', ATTMGR::PLUGIN_ID, $d, __( 'DEL', ATTMGR::TEXTDOMAIN ) );
 					$line .= sprintf( '<tr><td class="date">(%s) %s</td><td>%s %s~%s</td></tr>'."\n", ATTMGR_Calendar::dow( $w ), date( 'n/j', $t ), $off, $st, $et );
 				}
 				$search = array(
@@ -365,9 +364,9 @@ EOD;
 		);
 		$staff = ATTMGR_User::get_all_staff();
 		if ( empty( $staff ) ) {
-			printf( '<div class="alert">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
+			printf( '<div class="alert alert-caution">%s</div>', __( 'There are no staff.', ATTMGR::TEXTDOMAIN ) );
 		} else {
-			if ( $attmgr->user['operator']->is_admin() ) {
+			if ( $attmgr->user['operator']->can_edit_admin_scheduler() ) {
 				$startdate = $attmgr->page['startdate'];
 				list( $y, $m, $d ) = explode( '-', $startdate );
 				$m = intval( $m );
@@ -429,7 +428,7 @@ EOD;
 						$param['name'] = sprintf( '%s_post[%d][%s][endtime]', ATTMGR::PLUGIN_ID, $staff_id, $d );
 						$et = ATTMGR_Form::select_time( $param );
 
-						$off = sprintf( '<label><input type="checkbox" name="%s_off[%d][%s]" value="1" />%s</label>', ATTMGR::PLUGIN_ID, $staff_id, $d, __( '&times;', ATTMGR::TEXTDOMAIN ) );
+						$off = sprintf( '<label><input type="checkbox" name="%s_off[%d][%s]" value="1" />%s</label>', ATTMGR::PLUGIN_ID, $staff_id, $d, __( 'DEL', ATTMGR::TEXTDOMAIN ) );
 						$line .= sprintf( '<td>%s<br>%s<br>%s</td>'."\n", $st, $et, $off );
 					}
 					$portrait = null;
@@ -441,8 +440,8 @@ EOD;
 
 				// Return url
 				$url = get_permalink( get_page_by_path( $attmgr->option['specialpages']['admin_scheduler'] )->ID );
-				$url .= ( strstr( $url, '?' ) ) ? '&' : '?';
-				$url .= ( empty( $attmgr->page['qs']['week'] ) ) ? '' : 'week='.$startdate;
+				$query_string = ( strstr( $url, '?' ) ) ? '&' : '?';
+				$url .= ( empty( $attmgr->page['qs']['week'] ) ) ? '' : $query_string.'week='.$startdate;
 
 				ob_start();
 				$format = <<<EOD
@@ -519,16 +518,19 @@ EOD;
 EOD;
 		$options = '<option value=""></options>'."\n";
 		$now = $start;
-		while ( $now <= $end ) {
-			$selected = ( $current == $now ) ? 'selected' : '';
+		$end = ( $start > $end ) ? ATTMGR_Form::time_calc( $end, 60*24 ) : $end;
+		$i = 0;
+		while ( $now <= $end && $i <= 24 ) {
 			$hour = intval( substr( $now, 0, 2 ) );
 			$min = intval( substr( $now, -2 ) );
 			$show = ATTMGR_Form::time_form( $now );
+			$selected = ( $current == $now ) ? 'selected' : '';
 			$options .= sprintf( '<option value="%s" %s >%s</options>'."\n", $now, $selected, $show );
 			$min += $interval;
 			if ( $min >= 60 ) {
-				$hour++;
-				$min -= 60;
+				$i += floor( $min / 60 );
+				$hour += floor( $min / 60 );
+				$min = abs( $min % 60 );
 			}
 			$now = sprintf( '%02d:%02d', $hour, $min );
 		}
@@ -551,10 +553,41 @@ EOD;
 	 *	time form
 	 */
 	public function time_form( $time, $format = '%02d:%02d' ) {
-		$hour = intval( substr( $time, 0, 2 ) );
-		$min = intval( substr( $time, -2 ) );
-		$h = ( 24 <= $hour ) ? $hour - 24 : $hour;
-		$ret = sprintf( $format, $h, $min );
+		$ret = '';
+		if ( ! empty( $time ) ) {
+			$time = ATTMGR_Form::time_calc( $time, 0, false );
+			list( $hour, $min ) = explode( ':', $time );
+			$ret = sprintf( $format, intval( $hour), intval( $min ) );
+		}
+		return $ret;
+	}
+
+	/**
+	 *	time calc
+	 */
+	public function time_calc( $time, $add, $over24 = true ) {
+		/*
+		$time = '10:00'
+		$add = 120 (min)
+		*/
+		$ret = '';
+		if ( empty( $time ) ) {
+			$time = '00:00';
+		}
+		list( $hour, $min ) = explode( ':', $time );
+		$min += $add;
+		if ( 0 > $min  || 60 <= $min ) {
+			$hour += floor( $min / 60 );
+			$min = abs( $min % 60 );
+		}
+		if ( 0 > $hour ) {
+			$hour = abs( $hour % 24 );
+		} elseif ( ! $over24 ) {
+			if ( 24 <= $hour ) {
+				$hour = abs( $hour % 24 );
+			}
+		}
+		$ret = sprintf( '%02d:%02d', $hour, $min );
 		return $ret;
 	}
 

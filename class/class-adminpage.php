@@ -120,7 +120,7 @@ class ATTMGR_Admin_Page {
 <tr valign="top">
 <th scope="row"><?php _e( 'Start time', ATTMGR::TEXTDOMAIN ); ?></th>
 <td>
-<input type="text" name="attmgr_options[starttime]" id="" value="<?php echo $option['starttime']; ?>" size="5" /> ex. 10:00
+<input type="text" name="attmgr_options[starttime]" id="" value="<?php echo $option['starttime']; ?>" size="5" /> ex. 09:00
 <p class="description"></p>
 </td>
 </tr>
@@ -128,7 +128,7 @@ class ATTMGR_Admin_Page {
 <tr valign="top">
 <th scope="row"><?php _e( 'End time', ATTMGR::TEXTDOMAIN ); ?></th>
 <td>
-<input type="text" name="attmgr_options[endtime]" id="" value="<?php echo $option['endtime']; ?>" size="5" /> ex. 26:00
+<input type="text" name="attmgr_options[endtime]" id="" value="<?php echo $option['endtime']; ?>" size="5" /> ex. 23:00
 <p class="description"></p>
 </td>
 </tr>
@@ -184,6 +184,7 @@ class ATTMGR_Admin_Page {
 </div>
 <div class="inner-sidebar">
 <?php do_action( ATTMGR::PLUGIN_ID.'_plugin_info' ); ?>
+<?php do_action( ATTMGR::PLUGIN_ID.'_latest_info' ); ?>
 </div>
 </div>
 </div>

@@ -10,8 +10,8 @@ class ATTMGR {
 	const URL                     = 'http://attmgr.com/';
 	const PLUGIN_ID               = 'attmgr';
 	const PLUGIN_FILE             = 'attendance-manager.php';
-	const PLUGIN_VERSION          = '0.2.0';
-	const DB_VERSION              = '0.2.0';
+	const PLUGIN_VERSION          = '0.4.3';
+	const DB_VERSION              = '0.4.0';
 
 	public $mypluginurl           = null;
 	public $mypluginpath          = null;
@@ -65,6 +65,7 @@ class ATTMGR {
 		add_action( 'parse_request', array( &$this, 'parse_request' ) );
 		add_action( 'plugins_loaded', array( 'ATTMGR', 'reload_textdomain' ) );
 
+		add_action( 'plugins_loaded', array( 'ATTMGR_Updation', 'db_update' ) );
 		add_action( 'plugins_loaded', array( 'ATTMGR_Function', 'load' ) );
 	}
 	

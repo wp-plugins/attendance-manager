@@ -18,12 +18,16 @@ class ATTMGR_Updation {
 	public function plugin_update() {
 		global $wpdb, $attmgr;
 
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 			return;
 		}
 		$installed_version = get_option( ATTMGR::PLUGIN_ID.'_version' );
 		$new_version = $installed_version;
 
+		if ( $installed_version['plugin'] < ATTMGR::PLUGIN_VERSION ) {
+			$new_version['plugin'] = ATTMGR::PLUGIN_VERSION;
+			update_option( ATTMGR::PLUGIN_ID.'_version', $new_version );
+		}
 		return;
 	}
 
@@ -33,12 +37,16 @@ class ATTMGR_Updation {
 	public function db_update() {
 		global $wpdb, $attmgr;
 
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 			return;
 		}
 		$installed_version = get_option( ATTMGR::PLUGIN_ID.'_version' );
 		$new_version = $installed_version;
 
+		if ( $installed_version['db'] < ATTMGR::DB_VERSION ) {
+			$new_version['db'] = ATTMGR::DB_VERSION;
+			update_option( ATTMGR::PLUGIN_ID.'_version', $new_version );
+		}
 		return;
 	}
 
