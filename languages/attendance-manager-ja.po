@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Attendance Manager\n"
-"POT-Creation-Date: 2015-10-09 11:43+0900\n"
-"PO-Revision-Date: 2015-10-09 11:43+0900\n"
+"POT-Creation-Date: 2015-10-17 11:05+0900\n"
+"PO-Revision-Date: 2015-10-17 11:05+0900\n"
 "Last-Translator: tnomi <tnomi@sukimalab.com>\n"
 "Language-Team: Attendance Manager\n"
 "Language: ja\n"
@@ -174,7 +174,7 @@ msgid "Today"
 msgstr "今日"
 
 #: class/class-form.php:224 class/class-form.php:367
-#: class/class-shortcodes.php:147 class/class-shortcodes.php:263
+#: class/class-shortcodes.php:148 class/class-shortcodes.php:264
 #: class/class-shortcodes.php:406
 msgid "There are no staff."
 msgstr "スタッフが未登録です"
@@ -228,16 +228,16 @@ msgstr "プラグインサイト"
 msgid "Latest from Plugin"
 msgstr "最新情報"
 
-#: class/class-shortcodes.php:505
+#: class/class-shortcodes.php:520
 msgid "No staff are registered yet."
 msgstr "まだスタッフが登録されていません"
 
-#: class/class-shortcodes.php:524
+#: class/class-shortcodes.php:539
 #, php-format
 msgid "[Open %s~%s] Now %s "
 msgstr "[営業時間 %s~%s] ただいま %s です"
 
-#: class/class-shortcodes.php:532
+#: class/class-shortcodes.php:547
 msgid "There are no staff today."
 msgstr "本日出勤予定のスタッフはいません"
 

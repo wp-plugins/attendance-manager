@@ -18,6 +18,7 @@ class ATTMGR_Shortcode {
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_weekly', array( 'ATTMGR_Shortcode', 'weekly' ) );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly', array( 'ATTMGR_Shortcode', 'weekly_schedule' ), 99 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_attendance', array( 'ATTMGR_Shortcode', 'weekly_attendance' ), 99, 2 );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_weekly_all', array( 'ATTMGR_Shortcode', 'weekly_all' ) );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all', array( 'ATTMGR_Shortcode', 'weekly_all_schedule' ), 99 );
@@ -221,7 +222,7 @@ class ATTMGR_Shortcode {
 				$name = $s->data[ $name_key ];
 				if ( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ) {
 					$url = get_permalink( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] );
-					$list[] = sprintf( '<div class="staff"><a href="%s">%s</a><div>', $url, $name );
+					$list[] = sprintf( '<div class="staff"><a href="%s">%s</a></div>', $url, $name );
 				} else {
 					$list[] = sprintf( '<div class="staff">%s</div>', $name );
 				}
@@ -386,7 +387,6 @@ EOD;
 		return $attendance;
 	}
 
-
 	/**
 	 *	Weekly personal schedule
 	 */
@@ -458,7 +458,14 @@ EOD;
 					$class[] = 'not_working';
 					$time = '-';
 				}
-				$line .= sprintf( '<td class="%s">%s</td>'."\n", implode( ' ', $class ), $time );
+				$attendance = $time;
+				$args = array(
+					'date' => $d,
+					'schedule' => $schedule[ $d ],
+					'current_staff' => $staff
+				);
+				$attendance = apply_filters( 'attmgr_shortcode_weekly_attendance', $attendance, $args );
+				$line .= sprintf( '<td class="%s">%s</td>'."\n", implode( ' ', $class ), $attendance );
 			}
 			$body .= sprintf( '<tr>%s</tr>'."\n", $line );
 
@@ -485,6 +492,14 @@ EOD;
 		$html = ob_get_contents();
 		ob_end_clean();
 		return $html;
+	}
+
+	/**
+	 *	'attmgr_shortcode_weekly_attendance'
+	 */
+	public function weekly_attendance( $attendance, $args ) {
+		extract( $args );	// $date, $schedule, $current_staff
+		return $attendance;
 	}
 
 	/**
@@ -545,7 +560,7 @@ EOD;
 	</div>
 	<div class="post-info">
 		<div class="name">%NAME%</div>
-		<div class="attendance">%ATTENDANCE%<div>
+		<div class="attendance">%ATTENDANCE%</div>
 	</div>
 	<div class="clear">&nbsp;</div>
 </li>

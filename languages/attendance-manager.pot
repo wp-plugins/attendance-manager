@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Attendance Manager\n"
-"POT-Creation-Date: 2015-10-09 11:43+0900\n"
+"POT-Creation-Date: 2015-10-17 11:05+0900\n"
 "PO-Revision-Date: 2015-03-04 15:44+0900\n"
 "Last-Translator: tnomi <tnomi@sukimalab.com>\n"
 "Language-Team: Attendance Manager\n"
@@ -175,7 +175,7 @@ msgid "Today"
 msgstr ""
 
 #: class/class-form.php:224 class/class-form.php:367
-#: class/class-shortcodes.php:147 class/class-shortcodes.php:263
+#: class/class-shortcodes.php:148 class/class-shortcodes.php:264
 #: class/class-shortcodes.php:406
 msgid "There are no staff."
 msgstr ""
@@ -229,16 +229,16 @@ msgstr ""
 msgid "Latest from Plugin"
 msgstr ""
 
-#: class/class-shortcodes.php:505
+#: class/class-shortcodes.php:520
 msgid "No staff are registered yet."
 msgstr ""
 
-#: class/class-shortcodes.php:524
+#: class/class-shortcodes.php:539
 #, php-format
 msgid "[Open %s~%s] Now %s "
 msgstr ""
 
-#: class/class-shortcodes.php:532
+#: class/class-shortcodes.php:547
 msgid "There are no staff today."
 msgstr ""
 

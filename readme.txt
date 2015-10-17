@@ -4,7 +4,7 @@ Donate link:
 Tags: schedule, attendance, work, employee, online scheduling
 Requires at least: 4.1
 Tested up to: 4.3.1
-Stable tag: 0.4.2
+Stable tag: 0.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -115,6 +115,12 @@ If you encounter some problems, please ask me.
 
 == Changelog ==
 
+= 0.4.3 =
+
+* Bug fix.
+* Some filters were added.
+* Media query is added to "front.css".
+
 = 0.4.2 =
 
 * Some filters were added.
@@ -147,6 +153,6 @@ If start time which is later from the end time is chosen, end time would be rese
 
 == Upgrade Notice ==
 
-= 0.4.2 =
+= 0.4.3 =
 
-Some filters were added.
+Bug fix. Some filters and media query were added.

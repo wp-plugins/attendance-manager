@@ -52,9 +52,9 @@ class ATTMGR_Function {
 		wp_enqueue_script( 
 			ATTMGR::PLUGIN_ID.'_script',			// handle
 			$attmgr->mypluginurl.'front.js',		// src
-			false,									// deps
+			array( 'jquery' ),						// deps
 			ATTMGR::PLUGIN_VERSION, 				// ver
-			false 									// in footer
+			true 									// in footer
 		);
 	}
 
