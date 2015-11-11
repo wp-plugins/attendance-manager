@@ -390,6 +390,8 @@ table.attmgr_guide_weekly .dow {
  *	Mobile
  */
 @media screen and (max-width: 480px) {
+	table.attmgr_guide_weekly th,
+	table.attmgr_guide_weekly td,
 	table.attmgr_monthly_schedule th,
 	table.attmgr_monthly_schedule td,
 	table.attmgr_admin_scheduler th,
@@ -398,10 +400,12 @@ table.attmgr_guide_weekly .dow {
 	table.attmgr_weekly td,
 	table.attmgr_weekly_all th,
 	table.attmgr_weekly_all td {
-		padding:0;
+		padding: 3px 0;
 		font-size: x-small;
 		font-weight: normal;
 	}
+	table.attmgr_guide_weekly .date,
+	table.attmgr_guide_weekly .dow,
 	table.attmgr_monthly_schedule .date,
 	table.attmgr_monthly_schedule .dow,
 	table.attmgr_admin_scheduler .date,
