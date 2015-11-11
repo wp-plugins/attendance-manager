@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Attendance Manager\n"
-"POT-Creation-Date: 2015-10-17 11:05+0900\n"
-"PO-Revision-Date: 2015-10-17 11:05+0900\n"
+"POT-Creation-Date: 2015-11-11 16:03+0900\n"
+"PO-Revision-Date: 2015-11-11 16:03+0900\n"
 "Last-Translator: tnomi <tnomi@sukimalab.com>\n"
 "Language-Team: Attendance Manager\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.6\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -169,13 +169,13 @@ msgstr "金"
 msgid "Sat"
 msgstr "土"
 
-#: class/class-calendar.php:388 class/class-calendar.php:475
+#: class/class-calendar.php:393 class/class-calendar.php:480
 msgid "Today"
 msgstr "今日"
 
 #: class/class-form.php:224 class/class-form.php:367
-#: class/class-shortcodes.php:148 class/class-shortcodes.php:264
-#: class/class-shortcodes.php:406
+#: class/class-shortcodes.php:155 class/class-shortcodes.php:272
+#: class/class-shortcodes.php:414
 msgid "There are no staff."
 msgstr "スタッフが未登録です"
 
@@ -228,16 +228,16 @@ msgstr "プラグインサイト"
 msgid "Latest from Plugin"
 msgstr "最新情報"
 
-#: class/class-shortcodes.php:520
+#: class/class-shortcodes.php:530
 msgid "No staff are registered yet."
 msgstr "まだスタッフが登録されていません"
 
-#: class/class-shortcodes.php:539
+#: class/class-shortcodes.php:559
 #, php-format
 msgid "[Open %s~%s] Now %s "
 msgstr "[営業時間 %s~%s] ただいま %s です"
 
-#: class/class-shortcodes.php:547
+#: class/class-shortcodes.php:567
 msgid "There are no staff today."
 msgstr "本日出勤予定のスタッフはいません"
 
@@ -245,7 +245,7 @@ msgstr "本日出勤予定のスタッフはいません"
 msgid "Extra fields for Attendance Manager"
 msgstr "Attendance Manager の拡張項目"
 
-#: class/class-user.php:434 class/class-user.php:507 class/class-user.php:520
+#: class/class-user.php:434 class/class-user.php:510 class/class-user.php:523
 msgid "Staff"
 msgstr "スタッフ"
 
@@ -253,6 +253,6 @@ msgstr "スタッフ"
 msgid "This user is staff."
 msgstr "このユーザーはスタッフです"
 
-#: class/class-user.php:508
+#: class/class-user.php:511
 msgid "ID"
 msgstr "ID"

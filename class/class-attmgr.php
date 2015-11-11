@@ -10,7 +10,7 @@ class ATTMGR {
 	const URL                     = 'http://attmgr.com/';
 	const PLUGIN_ID               = 'attmgr';
 	const PLUGIN_FILE             = 'attendance-manager.php';
-	const PLUGIN_VERSION          = '0.4.3';
+	const PLUGIN_VERSION          = '0.4.5';
 	const DB_VERSION              = '0.4.0';
 
 	public $mypluginurl           = null;

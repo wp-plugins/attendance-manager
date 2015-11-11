@@ -275,6 +275,7 @@ class ATTMGR_Calendar {
 		extract(
 			shortcode_atts(
 				array(
+					'current' => '',
 				),
 				$atts
 			)
@@ -307,14 +308,18 @@ EOD;
 			$qs['date'] = sprintf( '%s-%s-%02d', $y, $m, $d );
 			$query_string .= http_build_query( $qs );
 			$link = sprintf( '<a href="%s">%s</a>', $query_string, $date );
-			$body .= sprintf( '<td class="%s">%s</td>'."\n", self::dow_lower( $w ), $link );
+			$class = array( self::dow_lower( $w ) );
+			if ( $current == sprintf( '%d-%s-%02d', $y, $m, $d ) ) {
+				$class[] = 'current';
+			}
+			$body .= sprintf( '<td class="%s">%s</td>'."\n", implode( ' ', $class ), $link );
 		}
 		$search = array(
 			'%CLASS%',
 			'%BODY%',
 		);
 		$replace = array(
-			sprintf( '%1$s_calendar %1$s_guide_weekly', ATTMGR::PLUGIN_ID ),
+			sprintf( '%1$s_guide_weekly', ATTMGR::PLUGIN_ID ),
 			$body,
 		);
 		echo str_replace( $search, $replace, $format );
@@ -479,8 +484,15 @@ EOD;
 	/**
 	 *	Navigation 
 	 */
-	public static function show_navi( $y, $m ) {
+	public static function show_navi( $y, $m, $past = true ) {
 		$thismonth = date( 'Y-m', current_time( 'timestamp' ) );
+		$prev_month = self::prev_month_link( $y, $m );
+		if ( ! $past ) {
+			$month = ATTMGR_Calendar::prev_month( $y, $m );
+			if ( implode( '-', $month ) < $thismonth ) {
+				$prev_month = '&nbsp;';
+			}
+		}
 		$format = <<<EOD
 <div id="list_pagenavi" class="list_pagenavi">
 <div id="prev_page" class="prev_page">&nbsp;</div>
@@ -499,7 +511,7 @@ EOD;
 				'%THIS_MONTH%'
 			);
 		$replace = array(
-				self::prev_month_link( $y, $m ),
+				$prev_month,
 				self::current_month( $y, $m ),
 				self::next_month_link( $y, $m ),
 				( 0 == strcmp( $y.'-'.$m, $thismonth ) ) ? '' : self::this_month_link()
@@ -510,8 +522,13 @@ EOD;
 	/**
 	 *	Navigation (weekly)
 	 */
-	public static function show_navi_weekly( $date ) {
+	public static function show_navi_weekly( $date, $past = true ) {
 		$thisweek = date( 'Y-m-d', current_time( 'timestamp' ) );
+		$prev_week = self::prev_week_link( $date );
+		if ( ! $past && ATTMGR_Calendar::prev_week( $date ) < $thisweek ) {
+			$prev_week = '&nbsp;';
+		}
+
 		$format = <<<EOD
 <div id="list_pagenavi" class="list_pagenavi">
 <div id="prev_page" class="prev_page">&nbsp;</div>
@@ -530,7 +547,7 @@ EOD;
 				'%THIS_WEEK%'
 			);
 		$replace = array(
-				self::prev_week_link( $date ),
+				$prev_week,
 				self::current_week( $date ),
 				self::next_week_link( $date ),
 				( 0 == strcmp( $date, $thisweek ) ) ? '' : self::this_week_link()
@@ -618,6 +635,36 @@ EOD;
 			break;
 		}
 		return $html;
+	}
+
+	/**
+	 *	Get week beginning
+	 */
+	public function get_week_beginning( $current_date ) {
+		// Current date
+		list( $cy, $cm, $cd ) = explode( '-', $current_date );
+		$cm = intval( $cm );
+		$cd = intval( $cd );
+		$current_time = mktime( 0, 0, 0, $cm, $cd, $cy );
+
+		// Today
+		$today = date( 'Y-m-d', time() );
+		list( $ty, $tm, $td ) = explode( '-', $today );
+		$tm = intval( $tm );
+		$td = intval( $td );
+		$today_time = mktime( 0, 0, 0, $tm, $td, $ty );
+
+		// Calc
+		$c = array();
+		$c['diff'] = $current_time - $today_time;
+		$c['day'] = intval( $c['diff'] / ( 60*60*24 ) );
+		$c['week'] = intval( $c['day'] / 7 );
+
+		$ret = array(
+			'day1' => date( 'Y-m-d', $today_time + 60*60*24 * 7*$c['week'] ),
+			'day7' => date( 'Y-m-d', ( $today_time + 60*60*24 * 7*$c['week'] ) + 60*60*24 * 6 )
+		);
+		return $ret;
 	}
 
 }
