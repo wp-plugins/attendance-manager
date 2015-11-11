@@ -4,7 +4,7 @@ Donate link:
 Tags: schedule, attendance, work, employee, online scheduling
 Requires at least: 4.1
 Tested up to: 4.3.1
-Stable tag: 0.4.3
+Stable tag: 0.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,8 +89,8 @@ This short code displays the weekly schedule of this staff.<br>
 その記事に、ショートコード [attmgr_weekly id=”xx”] を挿入します。<br>
 このショートコードは、そのスタッフの週間スケジュールを表示するものです。<br>
 
-* “id” is ID number of each user in your WordPress.<br>
-“id” はあなたのサイトにおける各ユーザーのID番号です。
+* "id" is ID number of each user in your WordPress.<br>
+"id" はあなたのサイトにおける各ユーザーのID番号です。
 
 = Attendance management =
 
@@ -114,6 +114,30 @@ If you encounter some problems, please ask me.
 6. Plugin option 
 
 == Changelog ==
+
+= 0.4.5 =
+
+* Parameter "guide" was added to short code `[attmgr_daily]`.<br>
+usage: `[attmgr_daily id="xx" guide="week"]`<br>
+In this case, the link to each date in a week is shown.<br>
+The value of parameter "guide" are "week" or "1week".<br>
+In a case of "1week", the link to next week and previous week are not shown.<br>
+Parameter "guide" may omit. If "guide" is omitted, the link to each date is not shown.
+
+* Parameter "past" was added to short code `[attmgr_daily]` and `[attmgr_weekly_all]` and `[attmgr_monthly_all]`.<br>
+usage(1): `[attmgr_daily id="xx" guide="week" past="0"]`<br>
+usage(2): `[attmgr_weekly_all past="0"]`<br>
+In this case, the link to the past is not shown.<br>
+Parameter "past" may omit, and default value of "past" is "true".
+
+* "font-size" in the <th> of schedule table was changed.(front.css)
+
+= 0.4.4 =
+
+* Parameter "hide" was added to short code `[attmgr_weekly]`.<br>
+usage: `[attmgr_weekly id="xx" hide="1"]`<br>
+In this case, it doesn't show anything.<br>
+Parameter "hide" may omit, and default value of "hide" is "false".
 
 = 0.4.3 =
 
@@ -153,6 +177,6 @@ If start time which is later from the end time is chosen, end time would be rese
 
 == Upgrade Notice ==
 
-= 0.4.3 =
+= 0.4.5 =
 
-Bug fix. Some filters and media query were added.
+Parameter "guide" was added to short code `[attmgr_daily]`. Parameter "past" was added to short code `[attmgr_daily]` and `[attmgr_weekly_all]` and `[attmgr_monthly_all]`.

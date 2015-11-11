@@ -99,7 +99,7 @@ EOD;
 				),
 				'daily_schedule' => array(
 					'post_title'     => __( 'Today&#39;s staff', ATTMGR::TEXTDOMAIN ),
-					'post_content'   => '[attmgr_daily]',
+					'post_content'   => '[attmgr_daily guide="1week"]',
 					'post_name'      => 'daily',
 					'post_status'   => 'publish',
 				),

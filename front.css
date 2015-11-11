@@ -56,11 +56,11 @@ table.attmgr_weekly_all td.portrait img {
 	margin: 8px;
 }
 table.attmgr_weekly_all .date {
-	font-size: 1.3em;
+	font-size: 0.9em;
 }
 table.attmgr_weekly_all .dow {
 	margin-left: 5px;
-	font-size: 0.9em;
+	font-size: 0.8em;
 }
 table.attmgr_weekly_all td.working {
 
@@ -86,11 +86,11 @@ table.attmgr_weekly td {
 	border: 1px solid #ddd !important;
 }
 table.attmgr_weekly .date {
-	font-size: 1.3em;
+	font-size: 0.9em;
 }
 table.attmgr_weekly .dow {
 	margin-left: 5px;
-	font-size: 0.9em;
+	font-size: 0.8em;
 }
 table.attmgr_weekly td.working {
 
@@ -242,15 +242,19 @@ table.attmgr_monthly_schedule th.sunday {
  */
 table.attmgr_guide_weekly {
 	width: 100%;
+	margin-bottom: 15px;
 	border-collapse: collapse !important;
 	border: 1px solid #ddd;
 }
 table.attmgr_guide_weekly td {
-	width: 14.2%;
-	padding: 0px;
-	vertical-align: middle;
+	width: 12.5%;
+	padding: 5px auto;
+	vertical-align: middle !important;
 	text-align: center;
 	border: 1px solid #ddd !important;
+}
+table.attmgr_guide_weekly td.current {
+	background-color: #f0f6ff;
 }
 table.attmgr_guide_weekly td a {
 	display: block;
@@ -258,11 +262,11 @@ table.attmgr_guide_weekly td a {
 	text-decoration: none;
 }
 table.attmgr_guide_weekly .date {
-	font-size: 1.3em;
+	font-size: 0.9em;
 }
 table.attmgr_guide_weekly .dow {
 	margin-left: 5px;
-	font-size: 0.9em;
+	font-size: 0.8em;
 }
 
 /*

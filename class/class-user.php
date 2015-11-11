@@ -488,12 +488,15 @@ EOD;
 	public function parse_sfaff_id( $content ) {
 		$content = str_replace( "\"", '', stripslashes( $content ) );
 		if ( ! empty( $content ) ) {
-			$match = preg_match( '/\[attmgr_weekly\sid=[0-9]+\]/', $content, $matches );
+			$match = preg_match( '/\[attmgr_weekly\s.+\]/', $content, $matches );
 			if ( $match ) {
-				$id = preg_replace( '/[^0-9]/', '', $matches[0] );
-				$staff = new ATTMGR_User( $id );
-				if ( ! empty( $staff->data['ID'] ) && $staff->is_staff() ) {
-					return $staff;
+				$id_match = preg_match( '/id=[0-9]+/', $matches[0], $id_part );
+				if ( $id_match ) {
+					$id = preg_replace( '/[^0-9]/', '', $id_part[0] );
+					$staff = new ATTMGR_User( $id );
+					if ( ! empty( $staff->data['ID'] ) && $staff->is_staff() ) {
+						return $staff;
+					}
 				}
 			}
 		}

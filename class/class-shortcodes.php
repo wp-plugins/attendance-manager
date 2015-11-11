@@ -15,6 +15,7 @@ class ATTMGR_Shortcode {
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily', array( 'ATTMGR_Shortcode', 'daily_schedule' ), 99 );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily_format', array( 'ATTMGR_Shortcode', 'daily_format' ), 99 );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily_values', array( 'ATTMGR_Shortcode', 'daily_values' ), 99, 2 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily_guide', array( 'ATTMGR_Shortcode', 'daily_guide' ), 99 );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_weekly', array( 'ATTMGR_Shortcode', 'weekly' ) );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly', array( 'ATTMGR_Shortcode', 'weekly_schedule' ), 99 );
@@ -87,12 +88,17 @@ class ATTMGR_Shortcode {
 		extract(
 			shortcode_atts(
 				array(
-					'id' => null,
+					'id'   => null,
+					'hide' => false,
 				),
 				$atts
 			)
 		);
-		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_weekly', $atts, $content );
+		if ( ! $hide ) {
+			$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_weekly', $atts, $content );
+		} else {
+			$html = '';
+		}
 		return $html;
 	}
 
@@ -137,6 +143,7 @@ class ATTMGR_Shortcode {
 			shortcode_atts(
 				array(
 					'start' => 0,			// 0:Sun, 1:Mon, ... 6:Sut 
+					'past'  => true,
 					'name_key'  => 'display_name',
 				),
 				$atts
@@ -186,7 +193,7 @@ class ATTMGR_Shortcode {
 			}
 			$data = ATTMGR_Calendar::set( $y, $m, $start, $extends );
 			// html
-			$subject = ATTMGR_Calendar::show_navi( $y, $m );
+			$subject = ATTMGR_Calendar::show_navi( $y, $m, $past );
 			$subject .= ATTMGR_Calendar::html( $atts, $data, array( 'ATTMGR_Shortcode', 'set_monthly_data' ) );
 			$search = sprintf( '<table class="%s_calendar', ATTMGR::PLUGIN_ID );
 			$replace = sprintf( '<table class="%1$s_calendar %1$s_monthly_schedule', ATTMGR::PLUGIN_ID );
@@ -254,6 +261,7 @@ EOD;
 		extract(
 			shortcode_atts(
 				array(
+					'past'  => true,
 					'name_key' => 'display_name',
 				),
 				$atts
@@ -358,7 +366,7 @@ EOD;
 				'%BODY%',
 			);
 			$replace = array(
-				ATTMGR_Calendar::show_navi_weekly( $startdate ),
+				ATTMGR_Calendar::show_navi_weekly( $startdate, $past ),
 				ATTMGR::PLUGIN_ID.'_weekly_all',
 				$head,
 				$body,
@@ -510,6 +518,8 @@ EOD;
 		extract(
 			shortcode_atts(
 				array(
+					'guide' => '',
+					'past'  => true,
 					'name_key' => 'display_name',
 				),
 				$atts
@@ -528,7 +538,17 @@ EOD;
 			$starttime = $attmgr->option['general']['starttime'];
 			$endtime = $attmgr->option['general']['endtime'];
 
-//			$calendar = ATTMGR_Calendar::set_weekly( $date );
+			if ( ! empty( $guide ) ) {
+				$args = array(
+					'date'  => $date,
+					'guide' => $guide,
+					'past'  => $past,
+					'html'  => '',
+				);
+				$args = apply_filters( 'attmgr_shortcode_daily_guide', $args );
+				echo $args['html'];
+			}
+
 			$now = current_time('timestamp');
 			$now_time = date( 'H:i', $now );
 
@@ -607,6 +627,31 @@ EOD;
 	}
 
 	/**
+	 *	Link to day
+	 */
+	public static function date_link_weekly( $args ) {
+		global $attmgr;
+
+		extract( $args['data'] );
+		/*
+			[d] => 11
+			[status] => 1
+			[y] => 2015
+			[m] => 11
+			[w] => 3
+		*/
+		$date = sprintf( '<span class="date">%d/%d</span><span class="dow">(%s)</span>', $m, $d, ATTMGR_Calendar::dow( $w ) );
+		$query_string = '?';
+		if ( !empty( $attmgr->qs ) ) {
+			$qs = $attmgr->qs;
+		}
+		$qs['date'] = sprintf( '%s-%s-%02d', $y, $m, $d );
+		$query_string .= http_build_query( $qs );
+		$link = sprintf( '<a href="%s">%s</a>', $query_string, $date );
+		return $link;
+	}
+
+	/**
 	 *	'attmgr_shortcode_daily_format'
 	 */
 	public function daily_format( $format ) {
@@ -619,6 +664,41 @@ EOD;
 	public function daily_values( $array, $args ) {
 		list( $search, $replace ) = $array;
 		return array( $search, $replace );
+	}
+
+	/**
+	 *	'attmgr_shortcode_daily_guide'
+	 */
+	public function daily_guide( $args ) {
+		/*
+		$args = array(
+			[date]  => '2015-11-03',
+			[guide] => 'week',		// '1week', 'week'
+			[past]  -> true,
+			[html]  => '', 
+		)
+		*/
+		extract( $args );	// $date, $guide, $html
+
+		$week = ATTMGR_Calendar::get_week_beginning( $date );
+		/*
+		$week = array(
+			[day1] => '2015-11-03',
+			[day7] => '2015-11-10'
+		)
+		*/
+		$calendar = ATTMGR_Calendar::set_weekly( $week['day1'] );
+		$date_link = ATTMGR_Calendar::guide_weekly( array( 'current' => $date ), $calendar, array( 'ATTMGR_Shortcode', 'date_link_weekly' ) );
+		if ( $guide == 'week' ) {
+			$navi = ATTMGR_Calendar::show_navi_weekly( $week['day1'], $past );
+			$html .= preg_replace( '/<a href=\"\?week=/s', '<a href="?date=', $navi );
+		}
+		if ( in_array( $args['guide'], array( 'week', '1week' ) ) ) {
+			$html .= $date_link;
+		}
+		$args['html'] = $html;
+
+		return $args;
 	}
 
 }
