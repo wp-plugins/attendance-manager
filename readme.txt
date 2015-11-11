@@ -118,14 +118,14 @@ If you encounter some problems, please ask me.
 = 0.4.5 =
 
 * Parameter "guide" was added to short code `[attmgr_daily]`.<br>
-usage: `[attmgr_daily id="xx" guide="week"]`<br>
+usage: `[attmgr_daily guide="week"]`<br>
 In this case, the link to each date in a week is shown.<br>
 The value of parameter "guide" are "week" or "1week".<br>
 In a case of "1week", the link to next week and previous week are not shown.<br>
 Parameter "guide" may omit. If "guide" is omitted, the link to each date is not shown.
 
 * Parameter "past" was added to short code `[attmgr_daily]` and `[attmgr_weekly_all]` and `[attmgr_monthly_all]`.<br>
-usage(1): `[attmgr_daily id="xx" guide="week" past="0"]`<br>
+usage(1): `[attmgr_daily guide="week" past="0"]`<br>
 usage(2): `[attmgr_weekly_all past="0"]`<br>
 In this case, the link to the past is not shown.<br>
 Parameter "past" may omit, and default value of "past" is "true".
