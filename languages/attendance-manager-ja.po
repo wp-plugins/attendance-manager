@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Attendance Manager\n"
-"POT-Creation-Date: 2015-11-11 16:03+0900\n"
-"PO-Revision-Date: 2015-11-11 16:03+0900\n"
+"POT-Creation-Date: 2015-11-25 15:34+0900\n"
+"PO-Revision-Date: 2015-11-25 15:34+0900\n"
 "Last-Translator: tnomi <tnomi@sukimalab.com>\n"
 "Language-Team: Attendance Manager\n"
 "Language: ja\n"
@@ -16,23 +16,23 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: class/class-activation.php:89 class/class-adminpage.php:212
+#: class/class-activation.php:94 class/class-adminpage.php:274
 msgid "Scheduler for staff"
 msgstr "出勤管理（スタッフ用）"
 
-#: class/class-activation.php:95 class/class-adminpage.php:222
+#: class/class-activation.php:100 class/class-adminpage.php:284
 msgid "Scheduler for admin"
 msgstr "出勤管理（管理者用）"
 
-#: class/class-activation.php:101
+#: class/class-activation.php:106
 msgid "Today&#39;s staff"
 msgstr "本日の出勤状況"
 
-#: class/class-activation.php:107
+#: class/class-activation.php:112
 msgid "Weekly schedule"
 msgstr "週間スケジュール"
 
-#: class/class-activation.php:113
+#: class/class-activation.php:118
 msgid "Monthly schedule"
 msgstr "月間スケジュール"
 
@@ -47,7 +47,7 @@ msgid "General"
 msgstr "一般"
 
 #: class/class-adminpage.php:44 class/class-adminpage.php:45
-#: class/class-adminpage.php:204
+#: class/class-adminpage.php:266
 msgid "Special Pages"
 msgstr "特別なページ"
 
@@ -84,122 +84,142 @@ msgid "minutes"
 msgstr "分"
 
 #: class/class-adminpage.php:146
+msgid "Date/Time format"
+msgstr "日付・時間の書式"
+
+#: class/class-adminpage.php:149
+msgid "Year-Month"
+msgstr "年-月"
+
+#: class/class-adminpage.php:162
+msgid "Month-Day"
+msgstr "月-日"
+
+#: class/class-adminpage.php:178 class/class-form.php:344
+msgid "Time"
+msgstr "時間"
+
+#: class/class-adminpage.php:190
+msgid "(For Schedule table)"
+msgstr "（スケジュール表）"
+
+#: class/class-adminpage.php:201
+msgid "(For Scheduler)"
+msgstr "（スケジュール管理）"
+
+#: class/class-adminpage.php:208
 msgid "CRON settings"
 msgstr "CRON設定"
 
-#: class/class-adminpage.php:149
+#: class/class-adminpage.php:211
 msgid "The days which do not delete the past schedule"
 msgstr "出勤情報を消さずに残す日数"
 
-#: class/class-adminpage.php:152
+#: class/class-adminpage.php:214
 msgid "days"
 msgstr "日"
 
-#: class/class-adminpage.php:158
+#: class/class-adminpage.php:220
 msgid "CRON interval"
 msgstr "CRON実行間隔"
 
-#: class/class-adminpage.php:161
+#: class/class-adminpage.php:223
 msgid "every harf hour"
 msgstr "30分毎"
 
-#: class/class-adminpage.php:162
+#: class/class-adminpage.php:224
 msgid "hourly"
 msgstr "1時間毎"
 
-#: class/class-adminpage.php:163
+#: class/class-adminpage.php:225
 msgid "daily"
 msgstr "1日毎"
 
-#: class/class-adminpage.php:164
+#: class/class-adminpage.php:226
 msgid "debug(every 10 seconds)"
 msgstr "確認用（10秒毎）"
 
-#: class/class-adminpage.php:176 class/class-adminpage.php:246
-#: class/class-form.php:336 class/class-form.php:482
+#: class/class-adminpage.php:238 class/class-adminpage.php:308
+#: class/class-form.php:349 class/class-form.php:498
 msgid "Update"
 msgstr "更新"
 
-#: class/class-adminpage.php:209
+#: class/class-adminpage.php:271
 msgid "Special page slug"
 msgstr "特別なページのスラッグ"
 
-#: class/class-adminpage.php:216 class/class-adminpage.php:226
+#: class/class-adminpage.php:278 class/class-adminpage.php:288
 #, php-format
 msgid "The page which inserted the short code %s"
 msgstr "ショートコード %s が挿入されたページ"
 
-#: class/class-adminpage.php:232
+#: class/class-adminpage.php:294
 msgid "Login page"
 msgstr "ログインページ"
 
-#: class/class-adminpage.php:236
+#: class/class-adminpage.php:298
 msgid "A standard login page will be used if a \"login page\" is not specified."
 msgstr "ログインページ欄が空の場合、標準のログインページを使います"
 
-#: class/class-adminpage.php:237
+#: class/class-adminpage.php:299
 msgid "If a login page is made separately, specify the name of that page."
 msgstr "独自にログインページを作る場合は、そのスラッグ名を指定します"
 
-#: class/class-calendar.php:19
+#: class/class-calendar.php:23
 msgid "Sun"
 msgstr "日"
 
-#: class/class-calendar.php:20
+#: class/class-calendar.php:24
 msgid "Mon"
 msgstr "月"
 
-#: class/class-calendar.php:21
+#: class/class-calendar.php:25
 msgid "Tue"
 msgstr "火"
 
-#: class/class-calendar.php:22
+#: class/class-calendar.php:26
 msgid "Wed"
 msgstr "水"
 
-#: class/class-calendar.php:23
+#: class/class-calendar.php:27
 msgid "Thu"
 msgstr "木"
 
-#: class/class-calendar.php:24
+#: class/class-calendar.php:28
 msgid "Fri"
 msgstr "金"
 
-#: class/class-calendar.php:25
+#: class/class-calendar.php:29
 msgid "Sat"
 msgstr "土"
 
-#: class/class-calendar.php:393 class/class-calendar.php:480
+#: class/class-calendar.php:401 class/class-calendar.php:485
 msgid "Today"
 msgstr "今日"
 
-#: class/class-form.php:224 class/class-form.php:367
-#: class/class-shortcodes.php:155 class/class-shortcodes.php:272
-#: class/class-shortcodes.php:414
+#: class/class-form.php:233 class/class-form.php:380
+#: class/class-shortcodes.php:155 class/class-shortcodes.php:271
+#: class/class-shortcodes.php:416
 msgid "There are no staff."
 msgstr "スタッフが未登録です"
 
-#: class/class-form.php:304 class/class-form.php:431
+#: class/class-form.php:312 class/class-form.php:447
 msgid "DEL"
 msgstr "消"
 
-#: class/class-form.php:329
+#: class/class-form.php:342
 msgid "Date"
 msgstr "日"
 
-#: class/class-form.php:330
+#: class/class-form.php:343
 msgid "Off"
 msgstr "休み"
 
-#: class/class-form.php:331
-msgid "Time"
-msgstr "時間"
-
-#: class/class-form.php:342 class/class-form.php:488
+#: class/class-form.php:355 class/class-form.php:504
 msgid "Permission denied."
 msgstr "アクセス権がありません"
 
-#: class/class-form.php:343
+#: class/class-form.php:356
 msgid "Only a \"Staff\" user can edit here."
 msgstr "このページでは \"スタッフ\" ユーザーのみ編集操作が可能です。"
 
@@ -228,31 +248,31 @@ msgstr "プラグインサイト"
 msgid "Latest from Plugin"
 msgstr "最新情報"
 
-#: class/class-shortcodes.php:530
+#: class/class-shortcodes.php:535
 msgid "No staff are registered yet."
 msgstr "まだスタッフが登録されていません"
 
-#: class/class-shortcodes.php:559
+#: class/class-shortcodes.php:564
 #, php-format
 msgid "[Open %s~%s] Now %s "
 msgstr "[営業時間 %s~%s] ただいま %s です"
 
-#: class/class-shortcodes.php:567
+#: class/class-shortcodes.php:572
 msgid "There are no staff today."
 msgstr "本日出勤予定のスタッフはいません"
 
-#: class/class-user.php:432
+#: class/class-user.php:430
 msgid "Extra fields for Attendance Manager"
 msgstr "Attendance Manager の拡張項目"
 
-#: class/class-user.php:434 class/class-user.php:510 class/class-user.php:523
+#: class/class-user.php:432 class/class-user.php:508 class/class-user.php:521
 msgid "Staff"
 msgstr "スタッフ"
 
-#: class/class-user.php:436
+#: class/class-user.php:434
 msgid "This user is staff."
 msgstr "このユーザーはスタッフです"
 
-#: class/class-user.php:511
+#: class/class-user.php:509
 msgid "ID"
 msgstr "ID"

@@ -35,8 +35,7 @@ class ATTMGR_CRON {
 		global $attmgr, $wpdb;
 
 		$preserve_day = current_time('timestamp') - ( $attmgr->option['general']['preserve_past'] *60*60*24 );
-		$prefix = $wpdb->prefix.ATTMGR::TABLEPREFIX;
-		$table = $prefix.'schedule';
+		$table = apply_filters( 'attmgr_schedule_table_name', $table );
 		$query = "DELETE FROM {$table} WHERE `date`<%s";
 		$ret = $wpdb->query( $wpdb->prepare( $query, array( date( 'Y-m-d', $preserve_day ) ) ), ARRAY_A );
 	}

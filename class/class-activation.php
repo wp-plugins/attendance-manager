@@ -11,9 +11,18 @@ class ATTMGR_Activation {
 		$mypluginpath = dirname( plugin_dir_path( __FILE__ ) ).'/';
 		$mypluginfile = $mypluginpath.ATTMGR::PLUGIN_FILE;
 
+		add_filter( 'attmgr_schedule_table_name', array( 'ATTMGR_Activation', 'schedule_table' ) );
 		register_activation_hook( $mypluginfile, array( 'ATTMGR_Activation', 'activation' ) );
 		register_deactivation_hook( $mypluginfile, array( 'ATTMGR_Activation', 'deactivation' ) );
 		register_uninstall_hook( $mypluginfile, array( 'ATTMGR_Activation', 'uninstall' ) );
+	}
+
+	/** 
+	 *	Schedule table name
+	 */
+	public function schedule_table( $table ) {
+		global $wpdb;
+		return $wpdb->prefix.ATTMGR::TABLEPREFIX.'schedule';
 	}
 
 	/** 
@@ -36,11 +45,8 @@ class ATTMGR_Activation {
 	 */
 	public function uninstall() {
 		global $wpdb;
-		$prefix = $wpdb->prefix;
-		$table = $prefix.'usermeta';
-		$query = "DELETE FROM {$table} "
-				."WHERE `meta_key` IN ( %s, %s ) ";
-		$ret = $wpdb->query( $wpdb->prepare( $query, array( ATTMGR::PLUGIN_ID.'_ex_attr_staff', ATTMGR::PLUGIN_ID.'_mypage_id' ) ), ARRAY_A );
+		delete_metadata( 'user', 0, ATTMGR::PLUGIN_ID.'_ex_attr_staff', '', true );
+		delete_metadata( 'user', 0, ATTMGR::PLUGIN_ID.'_mypage_id', '', true );
 		delete_option( ATTMGR::PLUGIN_ID );
 		delete_option( ATTMGR::PLUGIN_ID.'_version' );
 	}
@@ -54,12 +60,11 @@ class ATTMGR_Activation {
 		$version = get_option( ATTMGR::PLUGIN_ID.'_version' );
 
 		// CREATE TABLE
-		$prefix = $wpdb->prefix.ATTMGR::TABLEPREFIX;
-		$table = $prefix.'schedule';
+		$table = apply_filters( 'attmgr_schedule_table_name', $table );
 		if ( $table != $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table ) ) ) {
 			require_once( ABSPATH.'wp-admin/includes/upgrade.php' );
 			$sql = <<<EOD
-CREATE TABLE IF NOT EXISTS {$prefix}schedule (
+CREATE TABLE IF NOT EXISTS {$table} (
 date date NOT NULL COMMENT 'Date',
 starttime time DEFAULT NULL COMMENT 'Start time',
 endtime time DEFAULT NULL COMMENT 'End time',

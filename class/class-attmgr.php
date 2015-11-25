@@ -10,8 +10,8 @@ class ATTMGR {
 	const URL                     = 'http://attmgr.com/';
 	const PLUGIN_ID               = 'attmgr';
 	const PLUGIN_FILE             = 'attendance-manager.php';
-	const PLUGIN_VERSION          = '0.4.5';
-	const DB_VERSION              = '0.4.0';
+	const PLUGIN_VERSION          = '0.5.0';
+	const DB_VERSION              = '0.5.0';
 
 	public $mypluginurl           = null;
 	public $mypluginpath          = null;
@@ -36,6 +36,10 @@ class ATTMGR {
 			'starttime'           => null,
 			'endtime'             => null,
 			'interval'            => null,
+			'format_year_month'   => null,
+			'format_month_day'    => null,
+			'format_time'         => null,
+			'format_time_editor'  => null,
 			'cron_interval'       => null,
 			'preserve_past'       => null,
 			'time_style'          => null,
@@ -120,6 +124,10 @@ class ATTMGR {
 				'starttime'           => '09:00',
 				'endtime'             => '18:00',
 				'interval'            => 30,	// (min)
+				'format_year_month'   => 'Y-n',
+				'format_month_day'    => 'n/j',
+				'format_time'         => 'G:i',
+				'format_time_editor'  => 'H:i',
 				'cron_interval'       => 'daily',
 				'preserve_past'       => '60',	// (days)
 				'time_style'          => '24h',
