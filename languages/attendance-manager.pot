@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Attendance Manager\n"
-"POT-Creation-Date: 2015-11-11 16:03+0900\n"
+"POT-Creation-Date: 2015-11-25 15:34+0900\n"
 "PO-Revision-Date: 2015-03-04 15:44+0900\n"
 "Last-Translator: tnomi <tnomi@sukimalab.com>\n"
 "Language-Team: Attendance Manager\n"
@@ -17,23 +17,23 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: class/class-activation.php:89 class/class-adminpage.php:212
+#: class/class-activation.php:94 class/class-adminpage.php:274
 msgid "Scheduler for staff"
 msgstr ""
 
-#: class/class-activation.php:95 class/class-adminpage.php:222
+#: class/class-activation.php:100 class/class-adminpage.php:284
 msgid "Scheduler for admin"
 msgstr ""
 
-#: class/class-activation.php:101
+#: class/class-activation.php:106
 msgid "Today&#39;s staff"
 msgstr ""
 
-#: class/class-activation.php:107
+#: class/class-activation.php:112
 msgid "Weekly schedule"
 msgstr ""
 
-#: class/class-activation.php:113
+#: class/class-activation.php:118
 msgid "Monthly schedule"
 msgstr ""
 
@@ -48,7 +48,7 @@ msgid "General"
 msgstr ""
 
 #: class/class-adminpage.php:44 class/class-adminpage.php:45
-#: class/class-adminpage.php:204
+#: class/class-adminpage.php:266
 msgid "Special Pages"
 msgstr ""
 
@@ -85,122 +85,142 @@ msgid "minutes"
 msgstr ""
 
 #: class/class-adminpage.php:146
-msgid "CRON settings"
+msgid "Date/Time format"
 msgstr ""
 
 #: class/class-adminpage.php:149
-msgid "The days which do not delete the past schedule"
-msgstr ""
-
-#: class/class-adminpage.php:152
-msgid "days"
-msgstr ""
-
-#: class/class-adminpage.php:158
-msgid "CRON interval"
-msgstr ""
-
-#: class/class-adminpage.php:161
-msgid "every harf hour"
+msgid "Year-Month"
 msgstr ""
 
 #: class/class-adminpage.php:162
+msgid "Month-Day"
+msgstr ""
+
+#: class/class-adminpage.php:178 class/class-form.php:344
+msgid "Time"
+msgstr ""
+
+#: class/class-adminpage.php:190
+msgid "(For Schedule table)"
+msgstr ""
+
+#: class/class-adminpage.php:201
+msgid "(For Scheduler)"
+msgstr ""
+
+#: class/class-adminpage.php:208
+msgid "CRON settings"
+msgstr ""
+
+#: class/class-adminpage.php:211
+msgid "The days which do not delete the past schedule"
+msgstr ""
+
+#: class/class-adminpage.php:214
+msgid "days"
+msgstr ""
+
+#: class/class-adminpage.php:220
+msgid "CRON interval"
+msgstr ""
+
+#: class/class-adminpage.php:223
+msgid "every harf hour"
+msgstr ""
+
+#: class/class-adminpage.php:224
 msgid "hourly"
 msgstr ""
 
-#: class/class-adminpage.php:163
+#: class/class-adminpage.php:225
 msgid "daily"
 msgstr ""
 
-#: class/class-adminpage.php:164
+#: class/class-adminpage.php:226
 msgid "debug(every 10 seconds)"
 msgstr ""
 
-#: class/class-adminpage.php:176 class/class-adminpage.php:246
-#: class/class-form.php:336 class/class-form.php:482
+#: class/class-adminpage.php:238 class/class-adminpage.php:308
+#: class/class-form.php:349 class/class-form.php:498
 msgid "Update"
 msgstr ""
 
-#: class/class-adminpage.php:209
+#: class/class-adminpage.php:271
 msgid "Special page slug"
 msgstr ""
 
-#: class/class-adminpage.php:216 class/class-adminpage.php:226
+#: class/class-adminpage.php:278 class/class-adminpage.php:288
 #, php-format
 msgid "The page which inserted the short code %s"
 msgstr ""
 
-#: class/class-adminpage.php:232
+#: class/class-adminpage.php:294
 msgid "Login page"
 msgstr ""
 
-#: class/class-adminpage.php:236
+#: class/class-adminpage.php:298
 msgid "A standard login page will be used if a \"login page\" is not specified."
 msgstr ""
 
-#: class/class-adminpage.php:237
+#: class/class-adminpage.php:299
 msgid "If a login page is made separately, specify the name of that page."
 msgstr ""
 
-#: class/class-calendar.php:19
+#: class/class-calendar.php:23
 msgid "Sun"
 msgstr ""
 
-#: class/class-calendar.php:20
+#: class/class-calendar.php:24
 msgid "Mon"
 msgstr ""
 
-#: class/class-calendar.php:21
+#: class/class-calendar.php:25
 msgid "Tue"
 msgstr ""
 
-#: class/class-calendar.php:22
+#: class/class-calendar.php:26
 msgid "Wed"
 msgstr ""
 
-#: class/class-calendar.php:23
+#: class/class-calendar.php:27
 msgid "Thu"
 msgstr ""
 
-#: class/class-calendar.php:24
+#: class/class-calendar.php:28
 msgid "Fri"
 msgstr ""
 
-#: class/class-calendar.php:25
+#: class/class-calendar.php:29
 msgid "Sat"
 msgstr ""
 
-#: class/class-calendar.php:393 class/class-calendar.php:480
+#: class/class-calendar.php:401 class/class-calendar.php:485
 msgid "Today"
 msgstr ""
 
-#: class/class-form.php:224 class/class-form.php:367
-#: class/class-shortcodes.php:155 class/class-shortcodes.php:272
-#: class/class-shortcodes.php:414
+#: class/class-form.php:233 class/class-form.php:380
+#: class/class-shortcodes.php:155 class/class-shortcodes.php:271
+#: class/class-shortcodes.php:416
 msgid "There are no staff."
 msgstr ""
 
-#: class/class-form.php:304 class/class-form.php:431
+#: class/class-form.php:312 class/class-form.php:447
 msgid "DEL"
 msgstr ""
 
-#: class/class-form.php:329
+#: class/class-form.php:342
 msgid "Date"
 msgstr ""
 
-#: class/class-form.php:330
+#: class/class-form.php:343
 msgid "Off"
 msgstr ""
 
-#: class/class-form.php:331
-msgid "Time"
-msgstr ""
-
-#: class/class-form.php:342 class/class-form.php:488
+#: class/class-form.php:355 class/class-form.php:504
 msgid "Permission denied."
 msgstr ""
 
-#: class/class-form.php:343
+#: class/class-form.php:356
 msgid "Only a \"Staff\" user can edit here."
 msgstr ""
 
@@ -229,31 +249,31 @@ msgstr ""
 msgid "Latest from Plugin"
 msgstr ""
 
-#: class/class-shortcodes.php:530
+#: class/class-shortcodes.php:535
 msgid "No staff are registered yet."
 msgstr ""
 
-#: class/class-shortcodes.php:559
+#: class/class-shortcodes.php:564
 #, php-format
 msgid "[Open %s~%s] Now %s "
 msgstr ""
 
-#: class/class-shortcodes.php:567
+#: class/class-shortcodes.php:572
 msgid "There are no staff today."
 msgstr ""
 
-#: class/class-user.php:432
+#: class/class-user.php:430
 msgid "Extra fields for Attendance Manager"
 msgstr ""
 
-#: class/class-user.php:434 class/class-user.php:510 class/class-user.php:523
+#: class/class-user.php:432 class/class-user.php:508 class/class-user.php:521
 msgid "Staff"
 msgstr ""
 
-#: class/class-user.php:436
+#: class/class-user.php:434
 msgid "This user is staff."
 msgstr ""
 
-#: class/class-user.php:511
+#: class/class-user.php:509
 msgid "ID"
 msgstr ""

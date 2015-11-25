@@ -12,22 +12,22 @@ class ATTMGR_Shortcode {
 		add_shortcode( ATTMGR::PLUGIN_ID.'_admin_scheduler', array( 'ATTMGR_Shortcode', 'admin_scheduler' ) );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_daily', array( 'ATTMGR_Shortcode', 'daily' ) );
-		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily', array( 'ATTMGR_Shortcode', 'daily_schedule' ), 99 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily', array( 'ATTMGR_Shortcode', 'daily_schedule' ), 99, 3 );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily_format', array( 'ATTMGR_Shortcode', 'daily_format' ), 99 );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily_values', array( 'ATTMGR_Shortcode', 'daily_values' ), 99, 2 );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_daily_guide', array( 'ATTMGR_Shortcode', 'daily_guide' ), 99 );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_weekly', array( 'ATTMGR_Shortcode', 'weekly' ) );
-		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly', array( 'ATTMGR_Shortcode', 'weekly_schedule' ), 99 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly', array( 'ATTMGR_Shortcode', 'weekly_schedule' ), 99, 3 );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_attendance', array( 'ATTMGR_Shortcode', 'weekly_attendance' ), 99, 2 );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_weekly_all', array( 'ATTMGR_Shortcode', 'weekly_all' ) );
-		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all', array( 'ATTMGR_Shortcode', 'weekly_all_schedule' ), 99 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all', array( 'ATTMGR_Shortcode', 'weekly_all_schedule' ), 99, 3 );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all_info', array( 'ATTMGR_Shortcode', 'weekly_all_info' ), 99, 2 );
 		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all_attendance', array( 'ATTMGR_Shortcode', 'weekly_all_attendance' ), 99, 2 );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_monthly_all', array( 'ATTMGR_Shortcode', 'monthly_all' ) );
-		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_monthly_all', array( 'ATTMGR_Shortcode', 'monthly_all_schedule' ), 99 );
+		add_filter( ATTMGR::PLUGIN_ID.'_shortcode_monthly_all', array( 'ATTMGR_Shortcode', 'monthly_all_schedule' ), 99, 3 );
 
 		add_shortcode( ATTMGR::PLUGIN_ID.'_calendar', array( 'ATTMGR_Calendar', 'show_calendar' ) );
 	}
@@ -44,7 +44,7 @@ class ATTMGR_Shortcode {
 				$atts
 			)
 		);
-		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_staff_scheduler', $atts, $content );
+		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_staff_scheduler', $html, $atts, $content );
 		return $html;
 	}
 
@@ -60,7 +60,7 @@ class ATTMGR_Shortcode {
 				$atts
 			)
 		);
-		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_admin_scheduler', $atts, $content );
+		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_admin_scheduler', $html, $atts, $content );
 		return $html;
 	}
 
@@ -76,7 +76,7 @@ class ATTMGR_Shortcode {
 				$atts
 			)
 		);
-		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_daily', $atts, $content );
+		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_daily', $html, $atts, $content );
 		return $html;
 	}
 
@@ -95,7 +95,7 @@ class ATTMGR_Shortcode {
 			)
 		);
 		if ( ! $hide ) {
-			$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_weekly', $atts, $content );
+			$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_weekly', $html, $atts, $content );
 		} else {
 			$html = '';
 		}
@@ -114,7 +114,7 @@ class ATTMGR_Shortcode {
 				$atts
 			)
 		);
-		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all', $atts, $content );
+		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_weekly_all', $html, $atts, $content );
 		return $html;
 	}
 
@@ -130,14 +130,14 @@ class ATTMGR_Shortcode {
 				$atts
 			)
 		);
-		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_monthly_all', $atts, $content );
+		$html = apply_filters( ATTMGR::PLUGIN_ID.'_shortcode_monthly_all', $html, $atts, $content );
 		return $html;
 	}
 
 	/**
 	 *	Monthly all schedule
 	 */
-	public function monthly_all_schedule( $atts, $content = null ) {
+	public function monthly_all_schedule( $html, $atts, $content = null ) {
 		global $attmgr, $wpdb;
 		extract(
 			shortcode_atts(
@@ -169,8 +169,7 @@ class ATTMGR_Shortcode {
 			list( $y, $m ) = explode( '-', $args['month'] );
 
 			// calnedar data
-			$prefix = $wpdb->prefix.ATTMGR::TABLEPREFIX;
-			$table = $prefix.'schedule';
+			$table = apply_filters( 'attmgr_schedule_table_name', $table );
 			$query = "SELECT * FROM $table "
 					."WHERE date LIKE %s AND staff_id IN (".implode( ',', $staff_ids ).") "
 					."ORDER BY date ASC ";
@@ -256,7 +255,7 @@ EOD;
 	/**
 	 *	Weekly all schedule
 	 */
-	public function weekly_all_schedule( $atts, $content = null ) {
+	public function weekly_all_schedule( $html, $atts, $content = null ) {
 		global $attmgr, $wpdb;
 		extract(
 			shortcode_atts(
@@ -286,14 +285,17 @@ EOD;
 			for ( $i = 0; $i < $term; $i++ ) {
 				$t = $starttime + 60*60*24*$i;
 				$w = date( 'w', $t );
-				$date = sprintf( '<span class="date">%d/%d</span><span class="dow">(%s)</span>', date( 'n', $t ), date( 'j', $t ), ATTMGR_Calendar::dow( $w ) );
+				$date = '';
+				$date = sprintf( '<span class="date">%s</span><span class="dow">(%s)</span>', 
+					apply_filters( 'attmgr_date_format', $date, $t ),
+					ATTMGR_Calendar::dow( $w )
+				);
 				$head .= sprintf( '<th class="%s">%s</th>'."\n", ATTMGR_Calendar::dow_lower( $w ), $date );
 			}
 			$head = sprintf( '<tr><th>&nbsp;</th>'."\n".'%s</tr>', $head );
 
 			// body
-			$prefix = $wpdb->prefix.ATTMGR::TABLEPREFIX;
-			$table = $prefix.'schedule';
+			$table = apply_filters( 'attmgr_schedule_table_name', $table );
 			$query = "SELECT * FROM $table "
 					."WHERE staff_id = %d "
 					."AND ( date>=%s AND date<= %s ) ";
@@ -307,8 +309,8 @@ EOD;
 					foreach ( $records as $r ) {
 						if ( ! empty( $r['starttime'] ) || ! empty( $r['endtime'] ) ) {
 							$schedule[ $r['date'] ] = $r;
-							$schedule[ $r['date'] ]['starttime'] = ATTMGR_Form::time_form( substr( $r['starttime'], 0, 5 ) );
-							$schedule[ $r['date'] ]['endtime'] = ATTMGR_Form::time_form( substr( $r['endtime'], 0, 5 ) );
+							$schedule[ $r['date'] ]['starttime'] = apply_filters( 'attmgr_time_format', substr( $r['starttime'], 0, 5 ) );
+							$schedule[ $r['date'] ]['endtime'] = apply_filters( 'attmgr_time_format', substr( $r['endtime'], 0, 5 ) );
 						}
 					}
 				}
@@ -398,7 +400,7 @@ EOD;
 	/**
 	 *	Weekly personal schedule
 	 */
-	public function weekly_schedule( $atts, $content = null ) {
+	public function weekly_schedule( $html, $atts, $content = null ) {
 		global $attmgr, $wpdb;
 		extract(
 			shortcode_atts(
@@ -428,14 +430,17 @@ EOD;
 			for ( $i = 0; $i < $term; $i++ ) {
 				$t = $starttime + 60*60*24*$i;
 				$w = date( 'w', $t );
-				$date = sprintf( '<span class="date">%d/%d</span><span class="dow">(%s)</span>', date( 'n', $t ), date( 'j', $t ), ATTMGR_Calendar::dow( $w ) );
+				$date = '';
+				$date = sprintf( '<span class="date">%s</span><span class="dow">(%s)</span>', 
+					apply_filters( 'attmgr_date_format', $date, $t ),
+					ATTMGR_Calendar::dow( $w )
+				);
 				$head .= sprintf( '<th class="%s">%s</th>'."\n", ATTMGR_Calendar::dow_lower( $w ), $date );
 			}
 			$head = sprintf( '<tr>%s</tr>', $head );
 
 			// body
-			$prefix = $wpdb->prefix.ATTMGR::TABLEPREFIX;
-			$table = $prefix.'schedule';
+			$table = apply_filters( 'attmgr_schedule_table_name', $table );
 			$query = "SELECT * FROM $table "
 					."WHERE staff_id = %d "
 					."AND ( date>=%s AND date<= %s ) ";
@@ -447,8 +452,8 @@ EOD;
 				foreach ( $records as $r ) {
 					if ( ! empty( $r['starttime'] ) || ! empty( $r['endtime'] ) ) {
 						$schedule[ $r['date'] ] = $r;
-						$schedule[ $r['date'] ]['starttime'] = ATTMGR_Form::time_form( substr( $r['starttime'], 0, 5 ) );
-						$schedule[ $r['date'] ]['endtime'] = ATTMGR_Form::time_form( substr( $r['endtime'], 0, 5 ) );
+						$schedule[ $r['date'] ]['starttime'] = apply_filters( 'attmgr_time_format', substr( $r['starttime'], 0, 5 ) );
+						$schedule[ $r['date'] ]['endtime'] = apply_filters( 'attmgr_time_format', substr( $r['endtime'], 0, 5 ) );
 					}
 				}
 			}
@@ -513,7 +518,7 @@ EOD;
 	/**
 	 *	Daily schedule
 	 */
-	public function daily_schedule( $atts, $content = null ) {
+	public function daily_schedule( $html, $atts, $content = null ) {
 		global $attmgr, $wpdb;
 		extract(
 			shortcode_atts(
@@ -601,8 +606,8 @@ EOD;
 					if ( !empty( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ) ) {
 						$name = sprintf( '<a href="%s">%s</a>', get_permalink( $s->data[ATTMGR::PLUGIN_ID.'_mypage_id'] ), $name );
 					}
-					$starttime = ATTMGR_Form::time_form( $attendance[$s->data['ID']]['starttime'], '%d:%02d' );
-					$endtime   = ATTMGR_Form::time_form( $attendance[$s->data['ID']]['endtime'], '%d:%02d' );
+					$starttime = apply_filters( 'attmgr_time_format', $attendance[$s->data['ID']]['starttime'] );
+					$endtime   = apply_filters( 'attmgr_time_format', $attendance[$s->data['ID']]['endtime'] );
 
 					$replace = array(
 						$portrait,
@@ -640,7 +645,11 @@ EOD;
 			[m] => 11
 			[w] => 3
 		*/
-		$date = sprintf( '<span class="date">%d/%d</span><span class="dow">(%s)</span>', $m, $d, ATTMGR_Calendar::dow( $w ) );
+		$date = '';
+		$date = sprintf( '<span class="date">%s</span><span class="dow">(%s)</span>', 
+			apply_filters( 'attmgr_date_format', $date, mktime( 0, 0, 0, $m, $d, $y ) ),
+			ATTMGR_Calendar::dow( $w )
+		);
 		$query_string = '?';
 		if ( !empty( $attmgr->qs ) ) {
 			$qs = $attmgr->qs;

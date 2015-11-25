@@ -9,6 +9,10 @@ class ATTMGR_Calendar {
 	 */
 	public function init(){
 		add_shortcode( ATTMGR::PLUGIN_ID.'_calendar', array( 'ATTMGR_Calendar', 'show_calendar' ) );
+		add_filter( ATTMGR::PLUGIN_ID.'_date_format', array( 'ATTMGR_Calendar', 'date_format' ), 10, 2 );
+		add_filter( ATTMGR::PLUGIN_ID.'_month_format', array( 'ATTMGR_Calendar', 'month_format' ), 10, 2 );
+		add_filter( ATTMGR::PLUGIN_ID.'_time_format', array( 'ATTMGR_Calendar', 'time_format' ) );
+		add_filter( ATTMGR::PLUGIN_ID.'_time_format_editor', array( 'ATTMGR_Calendar', 'time_format_editor' ) );
 	}
 
 	/**
@@ -299,8 +303,11 @@ EOD;
 			[m] => 04
 			[w] => 0
 			*/
-
-			$date = sprintf( '<span class="date">%d/%d</span><span class="dow">(%s)</span>', intval( $m ), intval( $d ), self::dow( $w ) );
+			$date = '';
+			$date = sprintf( '<span class="date">%s</span><span class="dow">(%s)</span>', 
+				apply_filters( 'attmgr_date_format', $date, mktime( 0, 0, 0, $m, $d, $y ) ),
+				ATTMGR_Calendar::dow( $w )
+			);
 			$query_string = '?';
 			if ( ! empty( $attmgr->page['qs'] ) ) {
 				$qs = $attmgr->page['qs'];
@@ -357,7 +364,8 @@ EOD;
 		}
 
 		if ( 0 == $add ) {
-			$link = vsprintf( "%s-%s", $ym );
+			$link = '';
+			$link = apply_filters( 'attmgr_month_format', $link, mktime( 0, 0, 0, $m, 1, $y ) );
 		} else {
 			$query_string = '?';
 			if ( ! empty( $attmgr->qs ) ) {
@@ -437,13 +445,10 @@ EOD;
 		}
 		if ( 0 == $add ) {
 			list( $y, $m, $d ) = explode( '-', $date );
-			$end = date( 'Y-m-d', mktime( 0, 0, 0, $m, $d + 6, $y ) );
-			if ( substr( $date, 0, 4 ) == substr( $end, 0, 4 ) ) {
-				$end = date( 'm-d', mktime( 0, 0, 0, $m, $d + 6, $y ) );
-			}
 			//$link = $date.' ~ '.$end;
-			$start_date = date( 'n/j', mktime( 0, 0, 0, $m, $d, $y ) );
-			$end_date   = date( 'n/j', mktime( 0, 0, 0, $m, $d+6, $y ) );
+			$start_date = $end_date = '';
+			$start_date = apply_filters( 'attmgr_date_format', $date, mktime( 0, 0, 0, $m, $d, $y ) );
+			$end_date = apply_filters( 'attmgr_date_format', $date, mktime( 0, 0, 0, $m, $d+6, $y ) );
 			$link = sprintf( '%s ~ %s', $start_date, $end_date );
 		} else {
 			$query_string = '?';
@@ -667,5 +672,42 @@ EOD;
 		return $ret;
 	}
 
+	/**
+	 *	Date format
+	 */
+	public function date_format( $date, $time ) {
+		$option = ATTMGR::get_option('general');
+		$date = date( $option['format_month_day'], $time );
+		return $date;
+	}
+
+	/**
+	 *	Date format
+	 */
+	public function month_format( $date, $time ) {
+		$option = ATTMGR::get_option('general');
+		$date = date( $option['format_year_month'], $time );
+		return $date;
+	}
+
+	/**
+	 *	Time format
+	 */
+	public function time_format( $timestamp ) {
+		$option = ATTMGR::get_option('general');
+		$timestamp = ATTMGR_Form::time_calc( $timestamp, 0, false );
+		$time = date( $option['format_time'], strtotime( $timestamp ) );
+		return $time;
+	}
+
+	/**
+	 *	Time format on scheduler
+	 */
+	public function time_format_editor( $timestamp ) {
+		$option = ATTMGR::get_option('general');
+		$timestamp = ATTMGR_Form::time_calc( $timestamp, 0, false );
+		$time = date( $option['format_time_editor'], strtotime( $timestamp ) );
+		return $time;
+	}
 }
 ?>

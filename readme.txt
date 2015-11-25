@@ -4,7 +4,7 @@ Donate link:
 Tags: schedule, attendance, work, employee, online scheduling
 Requires at least: 4.1
 Tested up to: 4.3.1
-Stable tag: 0.4.5
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -115,17 +115,41 @@ If you encounter some problems, please ask me.
 
 == Changelog ==
 
+= 0.5.0 =
+
+* A "Date/Time Format" was added to the plugin option.<br>
+Several filter hook were added.<br>
+ - 'attmgr_date_format'
+ - 'attmgr_month_format'
+ - 'attmgr_time_format'
+ - 'attmgr_time_format_editor'
+
+* The schedule table name is given from a filter.<br>
+ - 'attmgr_schedule_table_name'
+
+* Several filter hook parameter were changed.<br>
+ - 'attmgr_shortcode_staff_scheduler'
+ - 'attmgr_shortcode_admin_scheduler'
+ - 'attmgr_shortcode_daily'
+ - 'attmgr_shortcode_weekly'
+ - 'attmgr_shortcode_weekly_all'
+ - 'attmgr_shortcode_monthly_all'
+
+* Bug fix about submit processing in the scheduler.
+
+* Dutch translation (by Kleijheeg-san) was added.
+
 = 0.4.5 =
 
 * Parameter "guide" was added to short code `[attmgr_daily]`.<br>
-usage: `[attmgr_daily id="xx" guide="week"]`<br>
+usage: `[attmgr_daily guide="week"]`<br>
 In this case, the link to each date in a week is shown.<br>
 The value of parameter "guide" are "week" or "1week".<br>
 In a case of "1week", the link to next week and previous week are not shown.<br>
 Parameter "guide" may omit. If "guide" is omitted, the link to each date is not shown.
 
 * Parameter "past" was added to short code `[attmgr_daily]` and `[attmgr_weekly_all]` and `[attmgr_monthly_all]`.<br>
-usage(1): `[attmgr_daily id="xx" guide="week" past="0"]`<br>
+usage(1): `[attmgr_daily guide="week" past="0"]`<br>
 usage(2): `[attmgr_weekly_all past="0"]`<br>
 In this case, the link to the past is not shown.<br>
 Parameter "past" may omit, and default value of "past" is "true".
@@ -177,6 +201,6 @@ If start time which is later from the end time is chosen, end time would be rese
 
 == Upgrade Notice ==
 
-= 0.4.5 =
+= 0.5.0 =
 
-Parameter "guide" was added to short code `[attmgr_daily]`. Parameter "past" was added to short code `[attmgr_daily]` and `[attmgr_weekly_all]` and `[attmgr_monthly_all]`.
+In this version, you can choose a "Date/Time" format. And bug in the scheduler are fixed. Dutch translation is added. 

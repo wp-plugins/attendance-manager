@@ -5,7 +5,7 @@ msgstr ""
 "PO-Revision-Date: 2015-11-25 15:34+0900\n"
 "Last-Translator: tnomi <tnomi@sukimalab.com>\n"
 "Language-Team: Attendance Manager\n"
-"Language: ja\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,265 +13,268 @@ msgstr ""
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: class/class-activation.php:94 class/class-adminpage.php:274
 msgid "Scheduler for staff"
-msgstr "出勤管理（スタッフ用）"
+msgstr "Planner voor personeel"
 
 #: class/class-activation.php:100 class/class-adminpage.php:284
 msgid "Scheduler for admin"
-msgstr "出勤管理（管理者用）"
+msgstr "Planner voor administratie"
 
 #: class/class-activation.php:106
 msgid "Today&#39;s staff"
-msgstr "本日の出勤状況"
+msgstr "Personeel voor vandaag"
 
 #: class/class-activation.php:112
 msgid "Weekly schedule"
-msgstr "週間スケジュール"
+msgstr "Weekschema"
 
 #: class/class-activation.php:118
 msgid "Monthly schedule"
-msgstr "月間スケジュール"
+msgstr "Maandschema"
 
 #: class/class-adminpage.php:28 class/class-adminpage.php:29
 #: class/class-adminpage.php:36 class/class-adminpage.php:44
 msgid "Attendance Manager"
-msgstr "Attendance Manager"
+msgstr "Beschikbaarheid manager"
 
 #: class/class-adminpage.php:36 class/class-adminpage.php:37
 #: class/class-adminpage.php:113
 msgid "General"
-msgstr "一般"
+msgstr "Standaard"
 
 #: class/class-adminpage.php:44 class/class-adminpage.php:45
 #: class/class-adminpage.php:266
 msgid "Special Pages"
-msgstr "特別なページ"
+msgstr "Speciale pagina's"
 
 #: class/class-adminpage.php:61
 msgid "Attendance Manager settings"
-msgstr "Attendance Manager 設定"
+msgstr "Beschikbaarheid manager instellingen"
 
 #: class/class-adminpage.php:81
 msgid "Settings are reset"
-msgstr "リセットされました"
+msgstr "Instellingen gereset"
 
 #: class/class-adminpage.php:92
 msgid "Settings are updated"
-msgstr "更新されました"
+msgstr "Instellingen aangepast"
 
 #: class/class-adminpage.php:118
 msgid "Scheduler settings"
-msgstr "スケジューラ設定"
+msgstr "Planner instellingen"
 
 #: class/class-adminpage.php:121
 msgid "Start time"
-msgstr "開始時間"
+msgstr "Starttijd"
 
 #: class/class-adminpage.php:129
 msgid "End time"
-msgstr "終了時間"
+msgstr "Eindtijd"
 
 #: class/class-adminpage.php:137
 msgid "Interval"
-msgstr "間隔"
+msgstr "Interval"
 
 #: class/class-adminpage.php:140
 msgid "minutes"
-msgstr "分"
+msgstr "minuten"
 
 #: class/class-adminpage.php:146
 msgid "Date/Time format"
-msgstr "日付・時間の書式"
+msgstr "Datum/Tijd formaat"
 
 #: class/class-adminpage.php:149
 msgid "Year-Month"
-msgstr "年-月"
+msgstr "Jaar-Maand"
 
 #: class/class-adminpage.php:162
 msgid "Month-Day"
-msgstr "月-日"
+msgstr "Maand-Dag"
 
 #: class/class-adminpage.php:178 class/class-form.php:344
 msgid "Time"
-msgstr "時間"
+msgstr "Tijd"
 
 #: class/class-adminpage.php:190
 msgid "(For Schedule table)"
-msgstr "（スケジュール表）"
+msgstr "(voor schema tafel)"
 
 #: class/class-adminpage.php:201
 msgid "(For Scheduler)"
-msgstr "（スケジュール管理）"
+msgstr "(voor planner)"
 
 #: class/class-adminpage.php:208
 msgid "CRON settings"
-msgstr "CRON設定"
+msgstr "CRON instellingen"
 
 #: class/class-adminpage.php:211
 msgid "The days which do not delete the past schedule"
-msgstr "出勤情報を消さずに残す日数"
+msgstr "Het aantal dagen dat in de geschiedenis blijft staan"
 
 #: class/class-adminpage.php:214
 msgid "days"
-msgstr "日"
+msgstr "dagen"
 
 #: class/class-adminpage.php:220
 msgid "CRON interval"
-msgstr "CRON実行間隔"
+msgstr "CRON interval"
 
 #: class/class-adminpage.php:223
 msgid "every harf hour"
-msgstr "30分毎"
+msgstr "Elk half uur"
 
 #: class/class-adminpage.php:224
 msgid "hourly"
-msgstr "1時間毎"
+msgstr "Elk uur"
 
 #: class/class-adminpage.php:225
 msgid "daily"
-msgstr "1日毎"
+msgstr "Elke dag"
 
 #: class/class-adminpage.php:226
 msgid "debug(every 10 seconds)"
-msgstr "確認用（10秒毎）"
+msgstr "Debug (10sec)"
 
 #: class/class-adminpage.php:238 class/class-adminpage.php:308
 #: class/class-form.php:349 class/class-form.php:498
 msgid "Update"
-msgstr "更新"
+msgstr "Opslaan"
 
 #: class/class-adminpage.php:271
 msgid "Special page slug"
-msgstr "特別なページのスラッグ"
+msgstr "Speciale pagina slug"
 
 #: class/class-adminpage.php:278 class/class-adminpage.php:288
 #, php-format
 msgid "The page which inserted the short code %s"
-msgstr "ショートコード %s が挿入されたページ"
+msgstr "Deze pagina voegt de volgende code toe %s"
 
 #: class/class-adminpage.php:294
 msgid "Login page"
-msgstr "ログインページ"
+msgstr "Login pagina"
 
 #: class/class-adminpage.php:298
-msgid "A standard login page will be used if a \"login page\" is not specified."
-msgstr "ログインページ欄が空の場合、標準のログインページを使います"
+msgid ""
+"A standard login page will be used if a \"login page\" is not specified."
+msgstr ""
+"Een standaard login pagina wordt gebruikt indien er niets is ingevuld bij "
+"\"login pagina\""
 
 #: class/class-adminpage.php:299
 msgid "If a login page is made separately, specify the name of that page."
-msgstr "独自にログインページを作る場合は、そのスラッグ名を指定します"
+msgstr "Als er een aparte login pagina is, vul die hier in"
 
 #: class/class-calendar.php:23
 msgid "Sun"
-msgstr "日"
+msgstr "Zo"
 
 #: class/class-calendar.php:24
 msgid "Mon"
-msgstr "月"
+msgstr "Ma"
 
 #: class/class-calendar.php:25
 msgid "Tue"
-msgstr "火"
+msgstr "Di"
 
 #: class/class-calendar.php:26
 msgid "Wed"
-msgstr "水"
+msgstr "Wo"
 
 #: class/class-calendar.php:27
 msgid "Thu"
-msgstr "木"
+msgstr "Do"
 
 #: class/class-calendar.php:28
 msgid "Fri"
-msgstr "金"
+msgstr "Vr"
 
 #: class/class-calendar.php:29
 msgid "Sat"
-msgstr "土"
+msgstr "Za"
 
 #: class/class-calendar.php:401 class/class-calendar.php:485
 msgid "Today"
-msgstr "今日"
+msgstr "Vandaag"
 
 #: class/class-form.php:233 class/class-form.php:380
 #: class/class-shortcodes.php:155 class/class-shortcodes.php:271
 #: class/class-shortcodes.php:416
 msgid "There are no staff."
-msgstr "スタッフが未登録です"
+msgstr "Geen personeel"
 
 #: class/class-form.php:312 class/class-form.php:447
 msgid "DEL"
-msgstr "消"
+msgstr "Verwijder"
 
 #: class/class-form.php:342
 msgid "Date"
-msgstr "日"
+msgstr "Datum"
 
 #: class/class-form.php:343
 msgid "Off"
-msgstr "休み"
+msgstr "Uit"
 
 #: class/class-form.php:355 class/class-form.php:504
 msgid "Permission denied."
-msgstr "アクセス権がありません"
+msgstr "Geen toegang"
 
 #: class/class-form.php:356
 msgid "Only a \"Staff\" user can edit here."
-msgstr "このページでは \"スタッフ\" ユーザーのみ編集操作が可能です。"
+msgstr "Alleen een werknemer kan dit aanpassen"
 
 #: class/class-info.php:43
 msgid "Plugin Information"
-msgstr "プラグイン情報"
+msgstr "Plugin informatie"
 
 #: class/class-info.php:46
 msgid "User's Guide"
-msgstr "ユーザーガイド"
+msgstr "Handleiding"
 
 #: class/class-info.php:48
 #, php-format
 msgid "Thank you for using \"%s\"."
-msgstr "\"%s\" をお使いいただきありがとうございます。"
+msgstr "Bedankt voor het gebruik van \"%s\"."
 
 #: class/class-info.php:49
 msgid "If wrong processing is found, please let me know."
-msgstr "もし誤った動作等があればお知らせください。"
+msgstr "Als het verwerken niet goed gaat, meld dit aan de ontwikkelaar."
 
 #: class/class-info.php:50
 msgid "Plugin site"
-msgstr "プラグインサイト"
+msgstr "Plugin website"
 
 #: class/class-info.php:65 class/class-info.php:73
 msgid "Latest from Plugin"
-msgstr "最新情報"
+msgstr "Laatste informatie over de plugin"
 
 #: class/class-shortcodes.php:535
 msgid "No staff are registered yet."
-msgstr "まだスタッフが登録されていません"
+msgstr "Nog geen personeel geregistreerd "
 
 #: class/class-shortcodes.php:564
 #, php-format
 msgid "[Open %s~%s] Now %s "
-msgstr "[営業時間 %s~%s] ただいま %s です"
+msgstr "[Open %s~%s] Nu %s "
 
 #: class/class-shortcodes.php:572
 msgid "There are no staff today."
-msgstr "本日出勤予定のスタッフはいません"
+msgstr "Geen personeel beschikbaar vandaag"
 
 #: class/class-user.php:430
 msgid "Extra fields for Attendance Manager"
-msgstr "Attendance Manager の拡張項目"
+msgstr "Extra veld voor Beschikbaarheid manager"
 
 #: class/class-user.php:432 class/class-user.php:508 class/class-user.php:521
 msgid "Staff"
-msgstr "スタッフ"
+msgstr "Personeel"
 
 #: class/class-user.php:434
 msgid "This user is staff."
-msgstr "このユーザーはスタッフです"
+msgstr "Deze gebruiker is personeel"
 
 #: class/class-user.php:509
 msgid "ID"

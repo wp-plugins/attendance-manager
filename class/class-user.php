@@ -123,8 +123,7 @@ class ATTMGR_User {
 		global $wpdb;
 
 		if ( $this->is_staff() ) {
-			$prefix = $wpdb->prefix.ATTMGR::TABLEPREFIX;
-			$table = $prefix.'schedule';
+			$table = apply_filters( 'attmgr_schedule_table_name', $table );
 			$query = "SELECT * FROM $table "
 					."WHERE `staff_id`=%d "
 					."AND `date`=%s "
@@ -143,8 +142,7 @@ class ATTMGR_User {
 		global $attmgr, $wpdb;
 
 		if ( $this->is_staff() ) {
-			$prefix = $wpdb->prefix.ATTMGR::TABLEPREFIX;
-			$table = $prefix.'schedule';
+			$table = apply_filters( 'attmgr_schedule_table_name', $table );
 
 			$now = current_time('timestamp');
 			$now_time = date( 'H:i', $now );

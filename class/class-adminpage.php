@@ -143,6 +143,68 @@ class ATTMGR_Admin_Page {
 </tr>
 
 <tr><td colspan="2"><hr /></td></tr>
+<tr valign="top"><td colspan="2"><strong><?php _e( 'Date/Time format', ATTMGR::TEXTDOMAIN ); ?></strong></td></tr>
+<?php $time = mktime( 0, 0, 0, 9, 21, 2015 ); ?>
+<tr valign="top">
+<th scope="row"><?php _e( 'Year-Month', ATTMGR::TEXTDOMAIN ); ?></th>
+<td>
+<select name="attmgr_options[format_year_month]" id="" >
+<option value="Y-n" <?php echo ( $option['format_year_month']=='Y-n' ) ? 'selected':''; ?>><?php echo date( 'Y-n', $time ); ?></option>
+<option value="Y/n" <?php echo ( $option['format_year_month']=='Y/n' ) ? 'selected':''; ?>><?php echo date( 'Y/n', $time ); ?></option>
+<option value="F Y" <?php echo ( $option['format_year_month']=='F Y' ) ? 'selected':''; ?>><?php echo date( 'F Y', $time ); ?></option>
+<option value="Y年n月" <?php echo ( $option['format_year_month']=='Y年n月' ) ? 'selected':''; ?>><?php echo date( 'Y年n月', $time ); ?></option>
+</select>
+<p class="description"></p>
+</td>
+</tr>
+
+<tr valign="top">
+<th scope="row"><?php _e( 'Month-Day', ATTMGR::TEXTDOMAIN ); ?></th>
+<td>
+<select name="attmgr_options[format_month_day]" id="" >
+<option value="n-j" <?php echo ( $option['format_month_day']=='n-j' ) ? 'selected':''; ?>><?php echo date( 'n-j', $time ); ?></option>
+<option value="n/j" <?php echo ( $option['format_month_day']=='n/j' ) ? 'selected':''; ?>><?php echo date( 'n/j', $time ); ?></option>
+<option value="j-n" <?php echo ( $option['format_month_day']=='j-n' ) ? 'selected':''; ?>><?php echo date( 'j-n', $time ); ?></option>
+<option value="j/n" <?php echo ( $option['format_month_day']=='j/n' ) ? 'selected':''; ?>><?php echo date( 'j/n', $time ); ?></option>
+<option value="M j" <?php echo ( $option['format_month_day']=='M j' ) ? 'selected':''; ?>><?php echo date( 'M j', $time ); ?></option>
+<option value="j M" <?php echo ( $option['format_month_day']=='j M' ) ? 'selected':''; ?>><?php echo date( 'j M', $time ); ?></option>
+<option value="n月j日" <?php echo ( $option['format_month_day']=='n月j日' ) ? 'selected':''; ?>><?php echo date( 'n月j日', $time ); ?></option>
+</select>
+<p class="description"></p>
+</td>
+</tr>
+
+<tr valign="top">
+<th scope="row"><?php _e( 'Time', ATTMGR::TEXTDOMAIN ); ?></th>
+<?php $am = strtotime('02:30'); $pm = strtotime('23:30'); ?>
+<td>
+<label>
+<select name="attmgr_options[format_time]" id="" >
+<option value="G:i" <?php echo ( $option['format_time']=='G:i' ) ? 'selected':''; ?>><?php echo date( 'G:i', $am ).' - '.date( 'G:i', $pm ); ?></option>
+<option value="H:i" <?php echo ( $option['format_time']=='H:i' ) ? 'selected':''; ?>><?php echo date( 'H:i', $am ).' - '.date( 'H:i', $pm ); ?></option>
+<option value="g:i A" <?php echo ( $option['format_time']=='g:i A' ) ? 'selected':''; ?>><?php echo date( 'g:i A', $am ).' - '.date( 'g:i A', $pm ); ?></option>
+<option value="g:i a" <?php echo ( $option['format_time']=='g:i a' ) ? 'selected':''; ?>><?php echo date( 'g:i a', $am ).' - '.date( 'g:i a', $pm ); ?></option>
+<option value="A g:i" <?php echo ( $option['format_time']=='A g:i' ) ? 'selected':''; ?>><?php echo date( 'A g:i', $am ).' - '.date( 'A g:i', $pm ); ?></option>
+<option value="a g:i" <?php echo ( $option['format_time']=='a g:i' ) ? 'selected':''; ?>><?php echo date( 'a g:i', $am ).' - '.date( 'a g:i', $pm ); ?></option>
+</select>
+<?php _e( '(For Schedule table)', ATTMGR::TEXTDOMAIN ); ?></label><br>
+
+<label>
+<select name="attmgr_options[format_time_editor]" id="" >
+<option value="G:i" <?php echo ( $option['format_time_editor']=='G:i' ) ? 'selected':''; ?>><?php echo date( 'G:i', $am ).' - '.date( 'G:i', $pm ); ?></option>
+<option value="H:i" <?php echo ( $option['format_time_editor']=='H:i' ) ? 'selected':''; ?>><?php echo date( 'H:i', $am ).' - '.date( 'H:i', $pm ); ?></option>
+<option value="g:i A" <?php echo ( $option['format_time_editor']=='g:i A' ) ? 'selected':''; ?>><?php echo date( 'g:i A', $am ).' - '.date( 'g:i A', $pm ); ?></option>
+<option value="g:i a" <?php echo ( $option['format_time_editor']=='g:i a' ) ? 'selected':''; ?>><?php echo date( 'g:i a', $am ).' - '.date( 'g:i a', $pm ); ?></option>
+<option value="A g:i" <?php echo ( $option['format_time_editor']=='A g:i' ) ? 'selected':''; ?>><?php echo date( 'A g:i', $am ).' - '.date( 'A g:i', $pm ); ?></option>
+<option value="a g:i" <?php echo ( $option['format_time_editor']=='a g:i' ) ? 'selected':''; ?>><?php echo date( 'a g:i', $am ).' - '.date( 'a g:i', $pm ); ?></option>
+</select>
+<?php _e( '(For Scheduler)', ATTMGR::TEXTDOMAIN ); ?></label>
+
+<p class="description"></p>
+</td>
+</tr>
+
+<tr><td colspan="2"><hr /></td></tr>
 <tr valign="top"><td colspan="2"><strong><?php _e( 'CRON settings', ATTMGR::TEXTDOMAIN ); ?></strong></td></tr>
 
 <tr valign="top">
